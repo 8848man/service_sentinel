@@ -10,27 +10,37 @@ class ServiceRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, data: ServiceCreate) -> Service:
+    def create(self, project_id: int, data: ServiceCreate) -> Service:
+        """Create a service within a project"""
         service = Service(**data.model_dump(exclude_unset=True, mode='json'))
         # Convert HttpUrl to string
         service.endpoint_url = str(data.endpoint_url)
+        service.project_id = project_id
         self.db.add(service)
         self.db.commit()
         self.db.refresh(service)
         return service
 
-    def find_by_id(self, service_id: int) -> Optional[Service]:
-        return self.db.query(Service).filter(Service.id == service_id).first()
+    def find_by_id(self, service_id: int, project_id: Optional[int] = None) -> Optional[Service]:
+        """Find service by ID, optionally scoped to project"""
+        query = self.db.query(Service).filter(Service.id == service_id)
+        if project_id is not None:
+            query = query.filter(Service.project_id == project_id)
+        return query.first()
 
     def find_all(
         self,
+        project_id: Optional[int] = None,
         is_active: Optional[bool] = None,
         service_type: Optional[ServiceType] = None,
         skip: int = 0,
         limit: int = 100
     ) -> list[Service]:
+        """Find all services, optionally scoped to project"""
         query = self.db.query(Service)
 
+        if project_id is not None:
+            query = query.filter(Service.project_id == project_id)
         if is_active is not None:
             query = query.filter(Service.is_active == is_active)
         if service_type:

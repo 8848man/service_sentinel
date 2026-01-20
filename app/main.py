@@ -7,19 +7,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
+from dotenv import load_dotenv
+
 from app.api import services, incidents, dashboard
+from app.api import projects, services_v2, incidents_v2, dashboard_v2
 from app.core.database import get_db, engine, Base
 from app.core.config import settings
+from app.core.firebase import init_firebase
 from app.scheduler import start_scheduler, stop_scheduler
+
+import os
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO if not settings.DEBUG else logging.DEBUG,
+    level=logging.DEBUG if not settings.DEBUG else logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
-
 logger = logging.getLogger(__name__)
 
+load_dotenv()  # ← 이게 핵심
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,6 +36,10 @@ async def lifespan(app: FastAPI):
     # Create database tables
     Base.metadata.create_all(bind=engine)
     logger.info("Database tables created/verified")
+
+    # firebase initializing
+    init_firebase()
+    logger.info("Firebase initialized")
 
     # Start scheduler
     await start_scheduler()
@@ -57,10 +67,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
+# Include routers - V1 (Legacy, un-authenticated)
 app.include_router(services.router, prefix="/api/v1")
 app.include_router(incidents.router, prefix="/api/v1")
 app.include_router(dashboard.router, prefix="/api/v1")
+
+# Include routers - V2 (Project-scoped with authentication)
+app.include_router(projects.router, prefix="/api/v2")
+app.include_router(services_v2.router, prefix="/api/v2")
+app.include_router(incidents_v2.router, prefix="/api/v2")
+app.include_router(dashboard_v2.router, prefix="/api/v2")
 
 
 @app.get("/")

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict
 from pydantic import BaseModel, HttpUrl, Field, ConfigDict
 
 from app.models.service import ServiceType, HttpMethod
@@ -42,7 +42,7 @@ class ServiceResponse(BaseModel):
     endpoint_url: str
     http_method: HttpMethod
     service_type: ServiceType
-    headers: dict
+    headers: Optional[Dict[str, str]] = None
     request_body: Optional[dict]
     expected_status_codes: list[int]
     timeout_seconds: int
