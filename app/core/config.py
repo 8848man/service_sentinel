@@ -1,11 +1,11 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
-
+import json
 
 class Settings(BaseSettings):
     # Application
     APP_NAME: str = "ServiceSentinel"
-    APP_VERSION: str = "1.0.0"
+    APP_VERSION: str = "1.1.0"
     DEBUG: bool = False
 
     # Database
@@ -34,10 +34,17 @@ class Settings(BaseSettings):
     ENCRYPTION_KEY: Optional[str] = None  # For encrypting sensitive headers
 
     # CORS
-    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:8080"]
+    CORS_ORIGINS: str = ""
 
-    # firebase
-    GOOGLE_APPLICATION_CREDENTIALS: str | None
+    @property
+    def cors_origins_list(self) -> list[str]:
+        return [
+            origin.strip()
+            for origin in self.CORS_ORIGINS.split(",")
+            if origin.strip()
+        ]
+    # GCP
+    GOOGLE_APPLICATION_CREDENTIALS: str | None = None  # ← 이렇게 수정
 
     model_config = SettingsConfigDict(
         env_file=".env",

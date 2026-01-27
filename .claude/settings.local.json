@@ -7,7 +7,9 @@
       "Bash(then echo \".env file exists\")",
       "Bash(else echo \".env file not found, creating...\")",
       "Bash(fi)",
-      "Bash(python -m uvicorn:*)"
+      "Bash(python -m uvicorn:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(python:*)"
     ]
   }
 }

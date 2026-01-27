@@ -34,3 +34,25 @@ class ProjectWithStats(ProjectResponse):
     active_services: int = 0
     total_incidents: int = 0
     open_incidents: int = 0
+
+
+class ProjectHealth(BaseModel):
+    """Derived project health (never stored in DB)"""
+    status: str  # "HEALTHY" | "DEGRADED" | "UNKNOWN"
+    total_services: int
+    healthy_services: int
+    error_services: int
+    inactive_services: int
+    active_incidents: int
+
+
+class ProjectWithHealth(ProjectResponse):
+    """Project response with derived health status"""
+    health: ProjectHealth
+
+
+class GuestBootstrapResponse(BaseModel):
+    """Response for guest bootstrap endpoint"""
+    project: ProjectResponse
+    api_key: str = Field(..., description="Guest API key (shown only once)")
+    message: str = Field(default="API key shown only once. Store it securely!")

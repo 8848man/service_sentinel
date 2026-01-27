@@ -117,3 +117,27 @@ class IncidentRepository:
         self.db.commit()
         self.db.refresh(incident)
         return incident
+
+    def find_all_by_service_ids(
+        self,
+        service_ids: list[int],
+        status: Optional[IncidentStatus] = None,
+        severity: Optional[IncidentSeverity] = None,
+        service_id: Optional[int] = None,
+        skip: int = 0,
+        limit: int = 100
+    ) -> list[Incident]:
+        """Find incidents for a list of service IDs (for project-scoped queries)"""
+        if not service_ids:
+            return []
+
+        query = self.db.query(Incident).filter(Incident.service_id.in_(service_ids))
+
+        if status:
+            query = query.filter(Incident.status == status)
+        if severity:
+            query = query.filter(Incident.severity == severity)
+        if service_id:
+            query = query.filter(Incident.service_id == service_id)
+
+        return query.order_by(desc(Incident.detected_at)).offset(skip).limit(limit).all()

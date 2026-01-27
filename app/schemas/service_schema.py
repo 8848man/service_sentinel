@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional, Dict
 from pydantic import BaseModel, HttpUrl, Field, ConfigDict
 
-from app.models.service import ServiceType, HttpMethod
+from app.models.service import ServiceType, HttpMethod, ServiceState
 
 
 class ServiceCreate(BaseModel):
@@ -49,6 +49,7 @@ class ServiceResponse(BaseModel):
     check_interval_seconds: int
     failure_threshold: int
     is_active: bool
+    service_state: ServiceState  # NEW: Service health state
     created_at: datetime
     updated_at: datetime
     last_checked_at: Optional[datetime]

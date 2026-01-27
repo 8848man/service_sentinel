@@ -24,6 +24,13 @@ class HttpMethod(str, enum.Enum):
     HEAD = "HEAD"
 
 
+class ServiceState(str, enum.Enum):
+    """Service operational state"""
+    HEALTHY = "healthy"
+    ERROR = "error"
+    INACTIVE = "inactive"
+
+
 class Service(Base):
     """
     Service represents an API or monitoring target.
@@ -52,6 +59,12 @@ class Service(Base):
     check_interval_seconds = Column(Integer, default=60)  # How often to check
     failure_threshold = Column(Integer, default=3)  # Failures before incident
     is_active = Column(Boolean, default=True, index=True)
+    service_state = Column(
+        Enum(ServiceState),
+        default=ServiceState.HEALTHY,
+        nullable=False,
+        index=True
+    )
 
     # Metadata
     created_at = Column(DateTime(timezone=True), server_default=func.now())

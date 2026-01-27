@@ -67,3 +67,6 @@ serviceAccountKey.json
 *.tmp
 *.bak
 *.cache
+
+# alembic env
+env.py

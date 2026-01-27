@@ -11,6 +11,8 @@ from dotenv import load_dotenv
 
 from app.api import services, incidents, dashboard
 from app.api import projects, services_v2, incidents_v2, dashboard_v2
+from app.api.v3 import projects as projects_v3, services as services_v3
+from app.api.v3 import incidents as incidents_v3, dashboard as dashboard_v3
 from app.core.database import get_db, engine, Base
 from app.core.config import settings
 from app.core.firebase import init_firebase
@@ -34,7 +36,11 @@ async def lifespan(app: FastAPI):
     logger.info("Starting ServiceSentinel Backend...")
 
     # Create database tables
-    Base.metadata.create_all(bind=engine)
+    # Base.metadata.create_all(bind=engine)
+    # DB 초기화 (테이블 전부 삭제)
+    # Base.metadata.drop_all(bind=engine)
+    # Base.metadata.create_all(bind=engine)
+
     logger.info("Database tables created/verified")
 
     # firebase initializing
@@ -61,7 +67,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -77,6 +83,13 @@ app.include_router(projects.router, prefix="/api/v2")
 app.include_router(services_v2.router, prefix="/api/v2")
 app.include_router(incidents_v2.router, prefix="/api/v2")
 app.include_router(dashboard_v2.router, prefix="/api/v2")
+
+# Include routers - V3 (Mandatory authentication with Firebase + Guest, strict project-scoping)
+app.include_router(projects_v3.router, prefix="/api/v3")
+app.include_router(services_v3.router, prefix="/api/v3")
+app.include_router(incidents_v3.router, prefix="/api/v3")
+app.include_router(dashboard_v3.router, prefix="/api/v3")
+app.include_router(dashboard_v3.global_router, prefix="/api/v3")
 
 
 @app.get("/")

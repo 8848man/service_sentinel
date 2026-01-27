@@ -19,3 +19,6 @@ class User(Base):
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     last_login_at = Column(DateTime(timezone=True))
+
+    # Relationships
+    projects = relationship("Project", back_populates="owner", cascade="all, delete-orphan")
