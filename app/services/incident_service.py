@@ -63,9 +63,17 @@ class IncidentService:
 
                 incident = self.incident_repo.create(incident_data)
 
+                # Update service state to ERROR
+                from app.repositories.service_repository import ServiceRepository
+                from app.models.service import ServiceState
+
+                service_repo = ServiceRepository(self.db)
+                service_repo.update_state(service.id, ServiceState.ERROR)
+
                 logger.warning(
                     f"Created new incident {incident.id} for service {service.name}. "
-                    f"Severity: {incident.severity.value}, Failures: {recent_failures}"
+                    f"Severity: {incident.severity.value}, Failures: {recent_failures}. "
+                    f"Service state transitioned to ERROR"
                 )
 
                 # TODO: Trigger notification
@@ -89,8 +97,17 @@ class IncidentService:
                     resolved_at=datetime.utcnow()
                 )
 
+                # Update service state to HEALTHY (only if still active)
+                from app.repositories.service_repository import ServiceRepository
+                from app.models.service import ServiceState
+
+                service_repo = ServiceRepository(self.db)
+                if service.is_active:  # Only if still active
+                    service_repo.update_state(service.id, ServiceState.HEALTHY)
+
                 logger.info(
-                    f"Auto-resolved incident {open_incident.id} for service {service.name}"
+                    f"Auto-resolved incident {open_incident.id} for service {service.name}. "
+                    f"Service state transitioned to HEALTHY"
                 )
 
     def _count_recent_failures(self, service_id: int, lookback_minutes: float) -> int:

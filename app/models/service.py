@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, JSON, Enum
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, JSON, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
@@ -24,11 +24,24 @@ class HttpMethod(str, enum.Enum):
     HEAD = "HEAD"
 
 
+class ServiceState(str, enum.Enum):
+    """Service operational state"""
+    HEALTHY = "healthy"
+    ERROR = "error"
+    INACTIVE = "inactive"
+
+
 class Service(Base):
+    """
+    Service represents an API or monitoring target.
+    Services are NOT aggregate roots - they belong to a Project.
+    """
     __tablename__ = "services"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False, unique=True, index=True)
+    project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    name = Column(String(100), nullable=False, index=True)
     description = Column(String(500), nullable=True)
 
     # Endpoint configuration
@@ -46,6 +59,12 @@ class Service(Base):
     check_interval_seconds = Column(Integer, default=60)  # How often to check
     failure_threshold = Column(Integer, default=3)  # Failures before incident
     is_active = Column(Boolean, default=True, index=True)
+    service_state = Column(
+        Enum(ServiceState),
+        default=ServiceState.HEALTHY,
+        nullable=False,
+        index=True
+    )
 
     # Metadata
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -53,5 +72,6 @@ class Service(Base):
     last_checked_at = Column(DateTime(timezone=True), nullable=True)
 
     # Relationships
+    project = relationship("Project", back_populates="services")
     health_checks = relationship("HealthCheck", back_populates="service", cascade="all, delete-orphan")
     incidents = relationship("Incident", back_populates="service", cascade="all, delete-orphan")

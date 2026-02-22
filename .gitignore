@@ -60,7 +60,13 @@ htmlcov/
 # Alembic
 alembic.ini
 
+#firebase
+serviceAccountKey.json
+
 # Temporary files
 *.tmp
 *.bak
 *.cache
+
+# alembic env
+env.py

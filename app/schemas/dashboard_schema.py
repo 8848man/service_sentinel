@@ -26,6 +26,19 @@ class DashboardOverview(BaseModel):
     open_incidents: int
     critical_incidents: int
     services: list[ServiceHealthSummary]
+    error_services: int = 0  # NEW: For compatibility with service_state model
+    inactive_services: int = 0  # NEW
+
+
+class GlobalDashboardMetrics(BaseModel):
+    """System-wide dashboard metrics across all projects"""
+    total_projects: int
+    total_services: int
+    healthy_services: int
+    error_services: int
+    inactive_services: int
+    active_incidents: int
+    degraded_projects: int  # Projects with errors or incidents
 
 
 class SystemMetrics(BaseModel):
