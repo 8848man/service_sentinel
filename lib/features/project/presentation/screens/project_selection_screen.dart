@@ -5,7 +5,7 @@ import 'package:service_sentinel_fe_v2/core/router/app_router.dart';
 import 'package:service_sentinel_fe_v2/core/settings/presentation/screens/common_settings_screen.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
-import '../../../../core/auth/providers/auth_provider.dart';
+import '../../../../core/auth/application/providers/auth_provider.dart';
 import '../widgets/project_list_section.dart';
 import '../widgets/project_header_section.dart';
 

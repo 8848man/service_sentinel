@@ -234,6 +234,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Add your first service to start monitoring';
 
   @override
+  String get services_no_services_recommended_service =>
+      'Add recommended service set';
+
+  @override
   String get services_service_name => 'Service Name';
 
   @override
@@ -774,6 +778,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_language => 'Language';
+
+  @override
+  String get settings_notifications => 'Notificaion';
+
+  @override
+  String get settings_notification_subtitle =>
+      'Request notification permission';
 
   @override
   String get settings_light => 'Light';

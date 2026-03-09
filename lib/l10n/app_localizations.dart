@@ -530,6 +530,12 @@ abstract class AppLocalizations {
   /// **'Add your first service to start monitoring'**
   String get services_no_services_message;
 
+  /// No description provided for @services_no_services_recommended_service.
+  ///
+  /// In en, this message translates to:
+  /// **'Add recommended service set'**
+  String get services_no_services_recommended_service;
+
   /// No description provided for @services_service_name.
   ///
   /// In en, this message translates to:
@@ -1490,6 +1496,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get settings_language;
+
+  /// No description provided for @settings_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notificaion'**
+  String get settings_notifications;
+
+  /// No description provided for @settings_notification_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request notification permission'**
+  String get settings_notification_subtitle;
 
   /// No description provided for @settings_light.
   ///

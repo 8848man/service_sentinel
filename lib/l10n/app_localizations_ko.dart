@@ -229,6 +229,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get services_no_services_message => '첫 번째 서비스를 추가하여 모니터링을 시작하세요';
 
   @override
+  String get services_no_services_recommended_service => '추천 서비스 세트 등록하기';
+
+  @override
   String get services_service_name => '서비스 이름';
 
   @override
@@ -751,6 +754,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get settings_language => '언어';
+
+  @override
+  String get settings_notifications => '알림';
+
+  @override
+  String get settings_notification_subtitle => '알림 권한 요청을 받습니다.';
 
   @override
   String get settings_light => '라이트';

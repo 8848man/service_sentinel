@@ -1,12 +1,20 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:service_sentinel_fe_v2/core/auth/application/services/device_registration_service.dart';
+import 'package:service_sentinel_fe_v2/core/auth/application/utils/resolve_platform.dart';
+import 'package:service_sentinel_fe_v2/core/auth/data/repositories/device_token_repository.dart';
+import 'package:service_sentinel_fe_v2/core/auth/domain/usecases/register_device_token.dart';
+import 'package:service_sentinel_fe_v2/core/di/providers.dart';
 import 'package:service_sentinel_fe_v2/core/router/app_router.dart';
-import '../../storage/secure_storage.dart';
-import '../../di/repository_providers.dart';
-import '../../state/project_session_notifier.dart';
-import '../domain/entities/auth_state.dart';
-import '../domain/entities/user.dart';
+import '../../../storage/secure_storage.dart';
+import '../../../di/repository_providers.dart';
+import '../../../state/project_session_notifier.dart';
+import '../../domain/entities/auth_state.dart';
+import '../../domain/entities/user.dart';
 
 part 'auth_provider.g.dart';
 
@@ -19,20 +27,25 @@ class AuthStateNotifier extends _$AuthStateNotifier {
     // Initialize auth state
     // Check if user is authenticated via Firebase
     final authRepo = ref.read(authRepositoryProvider);
-    final isAuth = await authRepo.isAuthenticated();
+    try {
+      final isAuth = await authRepo.isAuthenticated();
 
-    if (isAuth) {
-      final userResult = await authRepo.getCurrentUser();
-      final user = userResult.dataOrNull ?? GuestUser.instance;
+      if (isAuth) {
+        final userResult = await authRepo.getCurrentUser();
+        final user = userResult.dataOrNull ?? GuestUser.instance;
 
-      // Load stored project ID (if any)
-      final secureStorage = ref.read(secureStorageProvider);
-      final projectId = await secureStorage.getCurrentProjectId();
+        // Load stored project ID (if any)
+        final secureStorage = ref.read(secureStorageProvider);
+        final projectId = await secureStorage.getCurrentProjectId();
 
-      return AuthState.authenticated(
-        user: user,
-        currentProjectId: projectId,
-      );
+        return AuthState.authenticated(
+          user: user,
+          currentProjectId: projectId,
+        );
+      }
+    } catch (e) {
+      debugPrint("Error checking auth state: $e");
+      return AuthState.guest();
     }
 
     return AuthState.guest();
@@ -50,6 +63,7 @@ class AuthStateNotifier extends _$AuthStateNotifier {
 
       ref.read(goRouterProvider).go(AppRoutes.projectSelection);
 
+      unawaited(DeviceRegistrationService(ref).registerIfNeeded());
       final secureStorage = ref.read(secureStorageProvider);
       final projectId = await secureStorage.getCurrentProjectId();
 
@@ -201,3 +215,14 @@ String? currentProjectId(CurrentProjectIdRef ref) {
   final authState = ref.watch(authStateNotifierProvider);
   return authState.value?.currentProjectId;
 }
+
+final deviceTokenRepositoryProvider = Provider<DeviceTokenRepository>((ref) {
+  final dio = ref.watch(dioClientProvider);
+  return DeviceTokenRepository(dio.dio);
+});
+
+final registerDeviceTokenUseCaseProvider =
+    Provider<RegisterDeviceTokenUseCase>((ref) {
+  final authRepo = ref.read(deviceTokenRepositoryProvider);
+  return RegisterDeviceTokenUseCase(authRepo);
+});

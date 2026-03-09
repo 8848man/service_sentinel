@@ -3,9 +3,12 @@ class AppConfig {
   AppConfig._();
 
   /// Backend API base URL
-  static const String apiBaseUrl = 'http://localhost:8000';
-  // static const String apiBaseUrl =
-  //     'https://service-sentinel-500354453166.asia-northeast3.run.app';
+  // static const String apiBaseUrl = 'http://localhost:8000';
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue:
+        'https://service-sentinel-500354453166.asia-northeast3.run.app',
+  );
 
   /// API version
   static const String apiVersion = 'v3';

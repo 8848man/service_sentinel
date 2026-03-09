@@ -1,1 +1,33 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"lattui-auth","appId":"1:864284905352:android:0e9a1ecd1d23d3f84db43d","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"lattui-auth","configurations":{"android":"1:864284905352:android:0e9a1ecd1d23d3f84db43d","web":"1:864284905352:web:cad44a83f7f7f2de4db43d"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "lattui-auth",
+          "appId": "1:864284905352:android:0e9a1ecd1d23d3f84db43d",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "lattui-auth",
+          "configurations": {
+            "android": "1:864284905352:android:0e9a1ecd1d23d3f84db43d",
+            "web": "1:864284905352:web:cad44a83f7f7f2de4db43d"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "asia-east1"
+    }
+  }
+}

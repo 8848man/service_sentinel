@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:service_sentinel_fe_v2/core/extensions/context_extensions.dart';
 import 'package:service_sentinel_fe_v2/l10n/app_localizations.dart';
 import '../../../../core/router/app_router.dart';
-import '../../../../core/auth/providers/auth_provider.dart';
+import '../../../../core/auth/application/providers/auth_provider.dart';
 
 /// Splash screen - Initial loading screen
 /// Resolves auth state on app start and navigates accordingly

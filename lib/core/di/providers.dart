@@ -67,7 +67,7 @@ final unauthenticatedDioClientProvider = Provider<Dio>((ref) {
         onRequest: (options, handler) {
           logger
               .d('UNAUTH REQUEST[${options.method}] => PATH: ${options.path}');
-          logger.d('Headers: ${options.headers}');
+          // logger.d('Headers: ${options.headers}');
           if (options.data != null) {
             logger.d('Data: ${options.data}');
           }
