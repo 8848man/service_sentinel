@@ -13,7 +13,7 @@ final themeModeProvider =
 
 /// Theme mode state notifier
 class ThemeModeNotifier extends StateNotifier<AppThemeMode> {
-  ThemeModeNotifier() : super(AppThemeMode.light) {
+  ThemeModeNotifier() : super(AppThemeMode.dark) {
     _loadThemePreference();
   }
 
@@ -25,12 +25,12 @@ class ThemeModeNotifier extends StateNotifier<AppThemeMode> {
       if (themeName != null) {
         state = AppThemeMode.values.firstWhere(
           (mode) => mode.name == themeName,
-          orElse: () => AppThemeMode.light,
+          orElse: () => AppThemeMode.dark,
         );
       }
     } catch (e) {
       // If loading fails, keep default light theme
-      state = AppThemeMode.light;
+      state = AppThemeMode.dark;
     }
   }
 

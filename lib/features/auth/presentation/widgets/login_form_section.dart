@@ -9,7 +9,7 @@ import '../../../../core/router/app_router.dart';
 import '../../../../core/error/app_error.dart';
 import '../../../../core/migration/migration_provider.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../../../core/auth/providers/auth_provider.dart';
+import '../../../../core/auth/application/providers/auth_provider.dart';
 import 'migration_dialog.dart';
 
 /// Login form section - Smallest UI unit consuming Riverpod provider

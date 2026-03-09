@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/error/app_error.dart';
-import 'package:service_sentinel_fe_v2/core/auth/providers/auth_provider.dart';
+import 'package:service_sentinel_fe_v2/core/auth/application/providers/auth_provider.dart';
 import '../../../../core/extensions/context_extensions.dart';
 
 class SignUpDialog extends ConsumerStatefulWidget {

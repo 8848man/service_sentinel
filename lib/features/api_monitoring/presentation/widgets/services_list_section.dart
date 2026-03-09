@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:service_sentinel_fe_v2/features/api_monitoring/presentation/widgets/create_service_set_dialog.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../application/providers/service_provider.dart';
@@ -65,7 +66,7 @@ class ServicesListSection extends ConsumerWidget {
         servicesAsync.when(
           data: (services) {
             if (services.isEmpty) {
-              return _buildEmptyState(context, theme);
+              return _buildEmptyState(context, theme, ref);
             }
 
             return Column(
@@ -121,7 +122,8 @@ class ServicesListSection extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context, ThemeData theme) {
+  Widget _buildEmptyState(
+      BuildContext context, ThemeData theme, WidgetRef ref) {
     final l10n = context.l10n;
     return Card(
       child: Padding(
@@ -145,6 +147,17 @@ class ServicesListSection extends ConsumerWidget {
                 color: theme.colorScheme.onSurface.withOpacity(0.7),
               ),
               textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
+              onPressed: () => _showCreateGuideServiceDialog(context, ref),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.services_no_services_recommended_service),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                minimumSize: const Size(200, 36), // width만 0, height는 원하는 값 설정
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
             ),
           ],
         ),
@@ -439,6 +452,21 @@ class ServicesListSection extends ConsumerWidget {
     final result = await showDialog<Service>(
       context: context,
       builder: (context) => const CreateServiceDialog(),
+    );
+
+    // Refresh services list if service was created
+    if (result != null) {
+      ref.refresh(servicesProvider);
+    }
+  }
+
+  Future<void> _showCreateGuideServiceDialog(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final result = await showDialog<Service>(
+      context: context,
+      builder: (context) => const CreateServiceSetDialog(),
     );
 
     // Refresh services list if service was created

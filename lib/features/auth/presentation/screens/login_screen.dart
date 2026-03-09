@@ -4,7 +4,7 @@ import 'package:service_sentinel_fe_v2/core/l10n/locale_provider.dart';
 import 'package:service_sentinel_fe_v2/core/migration/migration_provider.dart';
 import 'package:service_sentinel_fe_v2/core/theme/app_theme_mode.dart';
 import 'package:service_sentinel_fe_v2/core/theme/theme_provider.dart';
-import 'package:service_sentinel_fe_v2/core/auth/providers/auth_provider.dart';
+import 'package:service_sentinel_fe_v2/core/auth/application/providers/auth_provider.dart';
 import 'package:service_sentinel_fe_v2/core/auth/domain/entities/auth_state.dart';
 import 'package:service_sentinel_fe_v2/features/auth/presentation/widgets/migration_dialog.dart';
 import '../../../../core/extensions/context_extensions.dart';

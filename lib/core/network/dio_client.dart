@@ -57,7 +57,7 @@ class DioClient {
         onRequest: (options, handler) {
           if (AppConfig.enableDebugLogging) {
             _logger.d('REQUEST[${options.method}] => PATH: ${options.path}');
-            _logger.d('Headers: ${options.headers}');
+            // _logger.d('Headers: ${options.headers}');
             if (options.data != null) {
               _logger.d('Data: ${options.data}');
             }

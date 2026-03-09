@@ -7,7 +7,7 @@ import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/state/project_session_notifier.dart';
 import '../../../../core/storage/secure_storage.dart';
-import '../../../../core/auth/providers/auth_provider.dart';
+import '../../../../core/auth/application/providers/auth_provider.dart';
 import '../../application/providers/project_provider.dart';
 import '../../domain/entities/api_key.dart';
 import '../../domain/entities/project.dart';

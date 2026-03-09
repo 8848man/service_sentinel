@@ -8,7 +8,7 @@ import '../../../router/app_router.dart';
 import '../../../state/project_session_notifier.dart';
 import '../../../theme/app_theme_mode.dart';
 import '../../../theme/theme_provider.dart';
-import '../../../auth/providers/auth_provider.dart';
+import '../../../auth/application/providers/auth_provider.dart';
 import '../widgets/api_key_settings_section.dart';
 
 /// Settings screen - App settings and preferences

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/state/project_session_notifier.dart';
-import 'package:service_sentinel_fe_v2/core/auth/repositories/auth_repository.dart';
+import 'package:service_sentinel_fe_v2/core/auth/data/repositories/auth_repository.dart';
 
 import '../../features/api_monitoring/domain/repositories/service_repository.dart';
 import '../../features/dashboard/domain/repositories/dashboard_repository.dart'

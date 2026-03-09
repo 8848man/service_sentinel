@@ -22,6 +22,7 @@ class SecureStorage {
       'api_key_value_'; // New: multiple keys by ID
   static const String _activeApiKeyPrefix =
       'active_api_key_'; // Track active key per project
+  static const String _deviceTokenKey = 'device_token';
 
   /// Write secure data
   Future<void> write(String key, String value) async {
@@ -148,6 +149,14 @@ class SecureStorage {
 
   /// Delete currently selected project ID
   Future<void> deleteCurrentProjectId() => delete(_projectIdKey);
+
+  Future<void> setDeviceToken(String token) async {
+    await write(_deviceTokenKey, token);
+  }
+
+  Future<String?> getDeviceToken() async {
+    return read(_deviceTokenKey);
+  }
 
   /// Legacy: Save API key globally (backwards compatibility)
   @Deprecated('Use saveApiKey(projectId, apiKey) instead')

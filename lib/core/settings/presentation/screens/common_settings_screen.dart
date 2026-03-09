@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,7 @@ import '../../../router/app_router.dart';
 import '../../../state/project_session_notifier.dart';
 import '../../../theme/app_theme_mode.dart';
 import '../../../theme/theme_provider.dart';
-import '../../../auth/providers/auth_provider.dart';
+import '../../../auth/application/providers/auth_provider.dart';
 import '../widgets/api_key_settings_section.dart';
 
 /// Settings screen - App settings and preferences
@@ -93,6 +94,17 @@ class _GeneralSettingsSection extends ConsumerWidget {
               subtitle: Text(locale.languageCode.toUpperCase()),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () => _showLanguageSelector(context, ref, locale),
+            ),
+
+            const Divider(),
+
+            // Language selector
+            ListTile(
+              leading: const Icon(Icons.message),
+              title: Text(l10n.settings_notifications),
+              subtitle: Text(l10n.settings_notification_subtitle),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => FirebaseMessaging.instance.requestPermission(),
             ),
           ],
         ),
