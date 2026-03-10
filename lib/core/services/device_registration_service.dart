@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/auth/application/providers/auth_provider.dart';
 import 'package:service_sentinel_fe_v2/core/auth/application/utils/resolve_platform.dart';
-import 'package:service_sentinel_fe_v2/core/storage/secure_storage.dart';
 
 // 기기 토큰을 등록해주는 서비스
 // 웹일 경우, VAPID 키를 사용하여 FCM 토큰을 가져오고, 모바일일 경우 일반적으로 FCM 토큰을 가져옴
@@ -26,19 +25,9 @@ class DeviceRegistrationService {
       final token = await _getFcmToken();
       if (token == null) return;
 
-      final secureStorage = ref.read(secureStorageProvider);
-      final storedToken = await secureStorage.getDeviceToken();
-
-      if (storedToken == token) {
-        debugPrint('Device token already registered');
-        return;
-      }
-
       await ref
           .read(registerDeviceTokenUseCaseProvider)
           .execute(token, resolvePlatformType());
-
-      await secureStorage.setDeviceToken(token);
     } catch (e) {
       debugPrint('Device registration failed: $e');
     }

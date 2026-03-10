@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:service_sentinel_fe_v2/core/auth/application/services/device_registration_service.dart';
+import 'package:service_sentinel_fe_v2/core/services/device_registration_service.dart';
 import 'package:service_sentinel_fe_v2/core/auth/application/utils/resolve_platform.dart';
 import 'package:service_sentinel_fe_v2/core/auth/data/repositories/device_token_repository.dart';
 import 'package:service_sentinel_fe_v2/core/auth/domain/usecases/register_device_token.dart';

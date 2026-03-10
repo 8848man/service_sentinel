@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:service_sentinel_fe_v2/core/settings/presentation/view_models/common_settings_view_model.dart';
 
 import '../../../extensions/context_extensions.dart';
 import '../../../l10n/locale_provider.dart';
@@ -57,6 +58,7 @@ class _GeneralSettingsSection extends ConsumerWidget {
     final l10n = context.l10n;
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeProvider);
+    final notifier = ref.read(commonSettingsViewModelProvider.notifier);
 
     return Card(
       child: Padding(
@@ -104,7 +106,7 @@ class _GeneralSettingsSection extends ConsumerWidget {
               title: Text(l10n.settings_notifications),
               subtitle: Text(l10n.settings_notification_subtitle),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => FirebaseMessaging.instance.requestPermission(),
+              onTap: () => notifier.requestPermission(),
             ),
           ],
         ),
