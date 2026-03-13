@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../application/providers/incident_provider.dart';
+import '../../presentation/providers/incident_provider.dart';
 import '../../domain/entities/incident.dart';
 import 'incident_detail_dialog.dart';
 

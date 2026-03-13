@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../application/providers/incident_provider.dart';
+import '../../presentation/providers/incident_provider.dart';
 import '../widgets/incident_detail_body.dart';
 
 /// Incident Detail Screen
