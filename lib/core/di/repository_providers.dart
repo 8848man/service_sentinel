@@ -2,12 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/state/project_session_notifier.dart';
 import 'package:service_sentinel_fe_v2/core/auth/data/repositories/auth_repository.dart';
 
-import '../../features/dashboard/domain/repositories/dashboard_repository.dart'
-    as global;
-import '../../features/dashboard/data/data_sources/global_dashboard_data_source.dart';
-import '../../features/dashboard/data/data_sources/remote_global_dashboard_data_source_impl.dart';
-import '../../features/dashboard/data/repositories/dashboard_repository_impl.dart'
-    as global;
 import '../auth/domain/repositories/auth_repository.dart';
 import '../../features/incident/domain/repositories/incident_repository.dart';
 import '../../features/incident/data/data_sources/local_incident_data_source_impl.dart';
@@ -26,33 +20,16 @@ import '../../features/project/data/repositories/project_repository_impl.dart';
 import '../data/data_source_mode_provider.dart';
 import 'providers.dart';
 
-/// Repository provider pattern:
-/// All repositories now use auth-aware facades that automatically
-/// switch between Local and Remote implementations based on DataSourceMode.
-///
-/// DataSourceMode is determined by authentication state:
-/// - Guest (unauthenticated) → DataSourceMode.local (Hive)
-/// - Authenticated → DataSourceMode.server (REST API)
-///
-/// Repositories observe DataSourceMode and delegate to the appropriate data source.
-
 // ============================================================================
 // AUTH REPOSITORY
 // ============================================================================
-
-/// Auth repository provider
-/// Always uses Firebase Auth (remote only)
-/// TODO: Implement FirebaseAuthRepositoryImpl
-// final authRepositoryProvider = Provider<AuthRepository>((ref) {
-//   final fb.FirebaseAuth firebasAuth = fb.FirebaseAuth.instance;
-//   return FirebaseAuthRepository(firebasAuth);
-// });
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final firebaseAuth = ref.watch(firebaseAuthProvider);
   final dio = ref.watch(dioClientProvider).dio;
   return AuthRepository(firebaseAuth, dio);
 });
+
 // ============================================================================
 // BOOTSTRAP REPOSITORY
 // ============================================================================
@@ -117,60 +94,3 @@ final incidentRepositoryProvider = Provider<IncidentRepository>((ref) {
     projectId: projectSession.projectId ?? 0,
   );
 });
-
-// ============================================================================
-// DASHBOARD REPOSITORY (Project-specific)
-// ============================================================================
-
-/// Dashboard repository provider
-/// TODO: Implement auth-aware dashboard repository
-// final dashboardRepositoryProvider = Provider<DashboardRepository>((ref) {
-//   throw UnimplementedError('DashboardRepository not implemented yet');
-// });
-
-// ============================================================================
-// GLOBAL DASHBOARD REPOSITORY
-// ============================================================================
-
-/// Global dashboard data source provider
-/// Provides system-wide metrics via REST API
-final remoteDashboardDataSourceProvider = Provider<DashboardDataSource>((ref) {
-  final dio = ref.watch(dioClientProvider).dio;
-  return RemoteGlobalDashboardDataSourceImpl(dio);
-});
-
-/// Global dashboard repository provider
-/// Provides system-wide dashboard metrics across all projects
-/// Note: This endpoint does not require authentication per README_v1.1.md
-final dashboardRepositoryProvider = Provider<global.DashboardRepository>((ref) {
-  final dataSource = ref.watch(remoteDashboardDataSourceProvider);
-  return global.DashboardRepositoryImpl(dataSource);
-});
-
-/// NOTE: All repositories except Auth and Dashboard are now fully wired
-/// with auth-aware implementations that automatically switch data sources
-/// based on authentication state.
-///
-/// The DataSourceMode provider observes authStateNotifierProvider and
-/// determines which data source to use:
-/// - DataSourceMode.local → Hive (guest users)
-/// - DataSourceMode.server → REST API (authenticated users)
-///
-/// This ensures:
-/// 1. UI never checks authentication state directly
-/// 2. Data source switching is handled at the repository level
-/// 3. All business logic remains in the Application layer
-/// 4. Infrastructure layer is fully decoupled from presentation
-// final remoteDashboardDataSourceProvider = Provider<DashboardDataSource>((ref) {
-//   final dio = ref.watch(dioClientProvider).dio;
-//   return RemoteGlobalDashboardDataSourceImpl(dio);
-// });
-
-// /// Global dashboard repository provider
-// /// Provides system-wide dashboard metrics across all projects
-// /// Note: This endpoint does not require authentication per README_v1.1.md
-// final globalDashboardRepositoryProvider =
-//     Provider<global.DashboardRepository>((ref) {
-//   final dataSource = ref.watch(remoteGlobalDashboardDataSourceProvider);
-//   return global.DashboardRepositoryImpl(dataSource);
-// });

@@ -7,7 +7,7 @@ import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashbo
 import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_overview.dart';
 import '../../domain/usecases/get_global_dashboard.dart';
 import '../../domain/entities/global_dashboard_metrics.dart';
-import '../../../../core/di/repository_providers.dart';
+import '../../di/repository_providers.dart';
 
 part 'dashboard_provider.g.dart';
 
