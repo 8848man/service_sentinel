@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/router/app_router.dart';
-import '../../application/providers/service_provider.dart';
+import '../providers/service_provider.dart';
 import '../widgets/service_detail_body.dart';
 
 /// Service Detail Screen

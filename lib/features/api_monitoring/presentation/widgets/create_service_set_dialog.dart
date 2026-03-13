@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/features/api_monitoring/presentation/widgets/create_service_set_form.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../application/providers/service_provider.dart';
+import '../providers/service_provider.dart';
 import '../../domain/entities/service.dart';
 
 // /// Create service dialog - Form for registering a new service/API

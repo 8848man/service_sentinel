@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../application/providers/service_provider.dart';
+import '../providers/service_provider.dart';
 import '../../domain/entities/service.dart';
 
 /// Service Create Dialog

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/constants/enums.dart';
 import 'package:service_sentinel_fe_v2/core/extensions/context_extensions.dart';
-import 'package:service_sentinel_fe_v2/features/api_monitoring/application/providers/service_provider.dart';
+import 'package:service_sentinel_fe_v2/features/api_monitoring/presentation/providers/service_provider.dart';
 import 'package:service_sentinel_fe_v2/features/api_monitoring/domain/entities/service.dart';
 
 class CreateServiceForm extends ConsumerStatefulWidget {
