@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:service_sentinel_fe_v2/core/auth/data/repositories/auth_repository.dart';
+import 'package:service_sentinel_fe_v2/core/auth/data/public.dart';
 
-import '../domain/repositories/auth_repository.dart';
+import 'package:service_sentinel_fe_v2/core/auth/domain/public.dart';
 import '../../di/providers.dart';
 
 // ============================================================================
