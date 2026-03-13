@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/usecases/get_project_health.dart';
 import '../../domain/entities/project_health.dart';
-import '../../../../core/di/repository_providers.dart';
+import '../../di/repository_providers.dart';
 
 part 'project_health_provider.g.dart';
 

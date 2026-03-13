@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:service_sentinel_fe_v2/core/di/providers.dart';
-import '../../../../core/di/repository_providers.dart';
+import '../../di/repository_providers.dart';
 import '../../../../core/error/result.dart';
 import '../../domain/entities/project.dart';
 import '../../domain/usecases/load_projects.dart';
