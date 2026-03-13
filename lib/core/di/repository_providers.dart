@@ -3,10 +3,6 @@ import 'package:service_sentinel_fe_v2/core/state/project_session_notifier.dart'
 import 'package:service_sentinel_fe_v2/core/auth/data/repositories/auth_repository.dart';
 
 import '../auth/domain/repositories/auth_repository.dart';
-import '../../features/incident/domain/repositories/incident_repository.dart';
-import '../../features/incident/data/data_sources/local_incident_data_source_impl.dart';
-import '../../features/incident/data/data_sources/remote_incident_data_source_impl.dart';
-import '../../features/incident/data/repositories/incident_repository_impl.dart';
 import '../../features/project/domain/repositories/api_key_repository.dart';
 import '../../features/project/domain/repositories/bootstrap_repository.dart';
 import '../../features/project/domain/repositories/project_repository.dart';
@@ -77,20 +73,3 @@ final apiKeyRepositoryProvider = Provider<ApiKeyRepository>((ref) {
   );
 });
 
-// ============================================================================
-// INCIDENT REPOSITORY
-// ============================================================================
-
-/// Incident repository provider - Auth-aware facade
-/// Automatically switches between local and remote based on DataSourceMode
-final incidentRepositoryProvider = Provider<IncidentRepository>((ref) {
-  final dio = ref.watch(dioClientProvider);
-  final projectSession = ref.watch(projectSessionProvider);
-
-  return IncidentRepositoryImpl(
-    localDataSource: LocalIncidentDataSourceImpl(),
-    remoteDataSource: RemoteIncidentDataSourceImpl(dio.dio),
-    getDataSourceMode: () => ref.read(dataSourceModeProvider),
-    projectId: projectSession.projectId ?? 0,
-  );
-});
