@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_overview.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/infrastructure/models/service_health_summary_dto.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/data/models/service_health_summary_dto.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
 
 part 'dashboard_overview_dto.freezed.dart';
 part 'dashboard_overview_dto.g.dart';
