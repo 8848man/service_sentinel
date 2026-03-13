@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_matrics.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
 
 part 'dashboard_metrics_dto.freezed.dart';
 part 'dashboard_metrics_dto.g.dart';
