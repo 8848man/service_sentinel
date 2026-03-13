@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../core/di/repository_providers.dart';
+import '../../di/repository_providers.dart';
 import '../../../../core/error/result.dart';
 import '../../domain/entities/service.dart';
 import '../../domain/repositories/service_repository.dart';

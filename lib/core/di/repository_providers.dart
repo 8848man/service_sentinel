@@ -2,16 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/state/project_session_notifier.dart';
 import 'package:service_sentinel_fe_v2/core/auth/data/repositories/auth_repository.dart';
 
-import '../../features/api_monitoring/domain/repositories/service_repository.dart';
 import '../../features/dashboard/domain/repositories/dashboard_repository.dart'
     as global;
 import '../../features/dashboard/data/data_sources/global_dashboard_data_source.dart';
 import '../../features/dashboard/data/data_sources/remote_global_dashboard_data_source_impl.dart';
 import '../../features/dashboard/data/repositories/dashboard_repository_impl.dart'
     as global;
-import '../../features/api_monitoring/data/data_sources/local_service_data_source_impl.dart';
-import '../../features/api_monitoring/data/data_sources/remote_service_data_source_impl.dart';
-import '../../features/api_monitoring/data/repositories/service_repository_impl.dart';
 import '../auth/domain/repositories/auth_repository.dart';
 import '../../features/incident/domain/repositories/incident_repository.dart';
 import '../../features/incident/data/data_sources/local_incident_data_source_impl.dart';
@@ -101,25 +97,6 @@ final apiKeyRepositoryProvider = Provider<ApiKeyRepository>((ref) {
 
   return ApiKeyRepositoryImpl(
     dataSource: RemoteApiKeyDataSourceImpl(dio.dio),
-  );
-});
-
-// ============================================================================
-// SERVICE REPOSITORY
-// ============================================================================
-
-/// Service repository provider - Auth-aware facade
-/// Automatically switches between local and remote based on DataSourceMode
-final serviceRepositoryProvider = Provider<ServiceRepository>((ref) {
-  final dio = ref.watch(dioClientProvider);
-
-  final projectSession = ref.watch(projectSessionProvider);
-
-  return ServiceRepositoryImpl(
-    localDataSource: LocalServiceDataSourceImpl(),
-    remoteDataSource: RemoteServiceDataSourceImpl(dio.dio),
-    getDataSourceMode: () => ref.watch(dataSourceModeProvider),
-    projectId: projectSession.projectId ?? 0,
   );
 });
 
