@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:service_sentinel_fe_v2/core/constants/enums.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/service_health_summary.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
 
 part 'service_health_summary_dto.freezed.dart';
 part 'service_health_summary_dto.g.dart';
