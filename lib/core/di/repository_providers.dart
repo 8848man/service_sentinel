@@ -9,9 +9,9 @@ import '../../features/dashboard/infrastructure/data_sources/global_dashboard_da
 import '../../features/dashboard/infrastructure/data_sources/remote_global_dashboard_data_source_impl.dart';
 import '../../features/dashboard/infrastructure/repositories/dashboard_repository_impl.dart'
     as global;
-import '../../features/api_monitoring/infrastructure/data_sources/local_service_data_source_impl.dart';
-import '../../features/api_monitoring/infrastructure/data_sources/remote_service_data_source_impl.dart';
-import '../../features/api_monitoring/infrastructure/repositories/service_repository_impl.dart';
+import '../../features/api_monitoring/data/data_sources/local_service_data_source_impl.dart';
+import '../../features/api_monitoring/data/data_sources/remote_service_data_source_impl.dart';
+import '../../features/api_monitoring/data/repositories/service_repository_impl.dart';
 import '../auth/domain/repositories/auth_repository.dart';
 import '../../features/incident/domain/repositories/incident_repository.dart';
 import '../../features/incident/infrastructure/data_sources/local_incident_data_source_impl.dart';

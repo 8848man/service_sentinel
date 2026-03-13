@@ -1,4 +1,4 @@
-import 'package:service_sentinel_fe_v2/features/api_monitoring/infrastructure/data_sources/local_service_data_source_impl.dart';
+import 'package:service_sentinel_fe_v2/features/api_monitoring/data/data_sources/local_service_data_source_impl.dart';
 
 import '../../../../core/data/data_source_mode.dart';
 import '../../../../core/error/result.dart';
