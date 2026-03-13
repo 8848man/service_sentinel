@@ -1,7 +1,4 @@
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_matrics.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_overview.dart';
-
-import '../../domain/entities/global_dashboard_metrics.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
 
 /// Abstract interface for global dashboard data source
 /// Global dashboard provides system-wide metrics across all projects
