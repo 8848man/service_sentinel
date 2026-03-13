@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:service_sentinel_fe_v2/core/error/app_error.dart';
 import 'package:service_sentinel_fe_v2/core/error/result.dart';
-import 'package:service_sentinel_fe_v2/core/auth/domain/entities/user.dart';
+import 'package:service_sentinel_fe_v2/core/auth/domain/public.dart';
 import '../../domain/repositories/auth_repository.dart';
 
 class AuthRepository implements IAuthRepository {
