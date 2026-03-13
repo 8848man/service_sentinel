@@ -1,7 +1,7 @@
 import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
-import '../../domain/entities/service.dart';
-import '../../domain/repositories/service_repository.dart';
+import '../entities/service.dart';
+import '../repositories/service_repository.dart';
 
 /// Use case: Create Service
 /// Creates a new monitored service/API

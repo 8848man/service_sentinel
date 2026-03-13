@@ -1,5 +1,5 @@
 import '../../../../core/error/result.dart';
-import '../../domain/repositories/service_repository.dart';
+import '../repositories/service_repository.dart';
 
 /// Use case: Delete Service
 /// Deletes a monitored service/API

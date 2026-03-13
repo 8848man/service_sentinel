@@ -3,10 +3,10 @@ import '../../../../core/di/repository_providers.dart';
 import '../../../../core/error/result.dart';
 import '../../domain/entities/service.dart';
 import '../../domain/repositories/service_repository.dart';
-import '../use_cases/load_services.dart';
-import '../use_cases/create_service.dart';
-import '../use_cases/update_service.dart';
-import '../use_cases/delete_service.dart';
+import '../../domain/usecases/load_services.dart';
+import '../../domain/usecases/create_service.dart';
+import '../../domain/usecases/update_service.dart';
+import '../../domain/usecases/delete_service.dart';
 
 part 'service_provider.g.dart';
 

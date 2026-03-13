@@ -1,7 +1,7 @@
 import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
-import '../../domain/entities/health_check.dart';
-import '../../domain/repositories/service_repository.dart';
+import '../entities/health_check.dart';
+import '../repositories/service_repository.dart';
 
 /// Use case: Trigger Health Check
 /// Manually triggers a health check for a service
