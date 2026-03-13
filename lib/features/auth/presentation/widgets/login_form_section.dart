@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:service_sentinel_fe_v2/core/auth/domain/entities/auth_state.dart';
+import 'package:service_sentinel_fe_v2/core/auth/domain/public.dart';
 
-import '../../../../core/auth/application/providers/auth_provider.dart';
+import 'package:service_sentinel_fe_v2/core/auth/application/public.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/migration/migration_provider.dart';
 import 'migration_dialog.dart';
