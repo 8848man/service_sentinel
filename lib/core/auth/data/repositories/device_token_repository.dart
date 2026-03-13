@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:service_sentinel_fe_v2/core/auth/domain/repositories/device_token_repository.dart';
+import 'package:service_sentinel_fe_v2/core/auth/domain/public.dart';
 import 'package:service_sentinel_fe_v2/core/config/app_config.dart';
 
 class DeviceTokenRepository implements IDeviceTokenRepository {
