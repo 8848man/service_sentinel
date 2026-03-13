@@ -5,9 +5,9 @@ import 'package:service_sentinel_fe_v2/core/auth/data/repositories/auth_reposito
 import '../../features/api_monitoring/domain/repositories/service_repository.dart';
 import '../../features/dashboard/domain/repositories/dashboard_repository.dart'
     as global;
-import '../../features/dashboard/infrastructure/data_sources/global_dashboard_data_source.dart';
-import '../../features/dashboard/infrastructure/data_sources/remote_global_dashboard_data_source_impl.dart';
-import '../../features/dashboard/infrastructure/repositories/dashboard_repository_impl.dart'
+import '../../features/dashboard/data/data_sources/global_dashboard_data_source.dart';
+import '../../features/dashboard/data/data_sources/remote_global_dashboard_data_source_impl.dart';
+import '../../features/dashboard/data/repositories/dashboard_repository_impl.dart'
     as global;
 import '../../features/api_monitoring/data/data_sources/local_service_data_source_impl.dart';
 import '../../features/api_monitoring/data/data_sources/remote_service_data_source_impl.dart';
