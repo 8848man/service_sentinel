@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/auth/data/repositories/auth_repository.dart';
 
-import '../auth/domain/repositories/auth_repository.dart';
-import 'providers.dart';
+import '../domain/repositories/auth_repository.dart';
+import '../../di/providers.dart';
 
 // ============================================================================
 // AUTH REPOSITORY

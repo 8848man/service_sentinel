@@ -11,7 +11,7 @@ import 'package:service_sentinel_fe_v2/core/auth/domain/usecases/register_device
 import 'package:service_sentinel_fe_v2/core/di/providers.dart';
 import 'package:service_sentinel_fe_v2/core/router/app_router.dart';
 import '../../../storage/secure_storage.dart';
-import '../../../di/repository_providers.dart';
+import '../di/repository_providers.dart';
 import '../../../state/project_session_notifier.dart';
 import '../../domain/entities/auth_state.dart';
 import '../../domain/entities/user.dart';
