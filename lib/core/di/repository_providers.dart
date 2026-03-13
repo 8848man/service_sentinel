@@ -14,9 +14,9 @@ import '../../features/api_monitoring/data/data_sources/remote_service_data_sour
 import '../../features/api_monitoring/data/repositories/service_repository_impl.dart';
 import '../auth/domain/repositories/auth_repository.dart';
 import '../../features/incident/domain/repositories/incident_repository.dart';
-import '../../features/incident/infrastructure/data_sources/local_incident_data_source_impl.dart';
-import '../../features/incident/infrastructure/data_sources/remote_incident_data_source_impl.dart';
-import '../../features/incident/infrastructure/repositories/incident_repository_impl.dart';
+import '../../features/incident/data/data_sources/local_incident_data_source_impl.dart';
+import '../../features/incident/data/data_sources/remote_incident_data_source_impl.dart';
+import '../../features/incident/data/repositories/incident_repository_impl.dart';
 import '../../features/project/domain/repositories/api_key_repository.dart';
 import '../../features/project/domain/repositories/bootstrap_repository.dart';
 import '../../features/project/domain/repositories/project_repository.dart';
