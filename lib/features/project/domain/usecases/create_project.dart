@@ -1,32 +1,32 @@
 import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
-import '../../domain/entities/project.dart';
-import '../../domain/repositories/project_repository.dart';
+import '../entities/project.dart';
+import '../repositories/project_repository.dart';
 
-/// Use case: Update Project
-/// Updates an existing project in appropriate data source
+/// Use case: Create Project
+/// Creates a new project in appropriate data source
 /// Guest: Local DB, Authenticated: Server
-class UpdateProject {
+class CreateProject {
   final ProjectRepository _repository;
 
-  UpdateProject({
+  CreateProject({
     required ProjectRepository repository,
   }) : _repository = repository;
 
-  Future<Result<Project>> execute(String id, ProjectUpdate data) async {
+  Future<Result<Project>> execute(ProjectCreate data) async {
     // Validate input
-    if (data.name != null && data.name!.trim().isEmpty) {
+    if (data.name.trim().isEmpty) {
       return Result.failure(
         ValidationError(message: 'Project name cannot be empty'),
       );
     }
 
-    if (data.name != null && data.name!.length > 100) {
+    if (data.name.length > 100) {
       return Result.failure(
         ValidationError(message: 'Project name cannot exceed 100 characters'),
       );
     }
 
-    return await _repository.update(id, data);
+    return await _repository.create(data);
   }
 }

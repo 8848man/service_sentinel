@@ -1,6 +1,6 @@
 import '../../../../core/error/result.dart';
-import '../../domain/entities/project.dart';
-import '../../domain/repositories/project_repository.dart';
+import '../entities/project.dart';
+import '../repositories/project_repository.dart';
 
 /// Use case: Load Projects
 /// Loads all projects from appropriate data source based on auth state

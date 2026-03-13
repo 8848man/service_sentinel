@@ -3,10 +3,10 @@ import 'package:service_sentinel_fe_v2/core/di/providers.dart';
 import '../../../../core/di/repository_providers.dart';
 import '../../../../core/error/result.dart';
 import '../../domain/entities/project.dart';
-import '../use_cases/load_projects.dart';
-import '../use_cases/create_project.dart';
-import '../use_cases/update_project.dart';
-import '../use_cases/delete_project.dart';
+import '../../domain/usecases/load_projects.dart';
+import '../../domain/usecases/create_project.dart';
+import '../../domain/usecases/update_project.dart';
+import '../../domain/usecases/delete_project.dart';
 
 part 'project_provider.g.dart';
 

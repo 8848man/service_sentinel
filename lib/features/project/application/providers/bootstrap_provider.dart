@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/di/providers.dart';
 import '../../../../core/di/repository_providers.dart';
-import '../use_cases/bootstrap_guest_user.dart';
+import '../../domain/usecases/bootstrap_guest_user.dart';
 
 part 'bootstrap_provider.g.dart';
 

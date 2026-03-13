@@ -1,8 +1,8 @@
 import '../../../../core/error/app_error.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/infrastructure/guest_api_key_service.dart';
-import '../../domain/entities/bootstrap.dart';
-import '../../domain/repositories/bootstrap_repository.dart';
+import '../entities/bootstrap.dart';
+import '../repositories/bootstrap_repository.dart';
 
 /// Use case: Bootstrap Guest User
 ///

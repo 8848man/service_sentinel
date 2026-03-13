@@ -1,6 +1,6 @@
 import '../../../../core/error/result.dart';
-import '../../domain/entities/project_health.dart';
-import '../../domain/repositories/project_repository.dart';
+import '../entities/project_health.dart';
+import '../repositories/project_repository.dart';
 
 /// Use case: Get Project Health
 ///

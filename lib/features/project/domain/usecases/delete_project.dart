@@ -1,5 +1,5 @@
 import '../../../../core/error/result.dart';
-import '../../domain/repositories/project_repository.dart';
+import '../repositories/project_repository.dart';
 
 /// Use case: Delete Project
 /// Deletes a project from appropriate data source

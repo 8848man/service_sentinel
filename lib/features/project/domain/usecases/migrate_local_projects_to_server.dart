@@ -1,7 +1,7 @@
 import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
-import '../../domain/entities/project.dart';
-import '../../domain/repositories/project_repository.dart';
+import '../entities/project.dart';
+import '../repositories/project_repository.dart';
 
 /// Use case: Migrate Local Projects to Server
 /// Called after user logs in to sync local data with server

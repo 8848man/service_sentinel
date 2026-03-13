@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../use_cases/get_project_health.dart';
+import '../../domain/usecases/get_project_health.dart';
 import '../../domain/entities/project_health.dart';
 import '../../../../core/di/repository_providers.dart';
 
