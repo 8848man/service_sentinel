@@ -1,6 +1,4 @@
-import 'package:service_sentinel_fe_v2/features/project/domain/entities/project_health.dart';
-import 'package:service_sentinel_fe_v2/features/project/infrastructure/data_sources/local_project_data_source_impl.dart';
-
+import 'package:service_sentinel_fe_v2/features/project/domain/public.dart';
 import '../../../../core/data/data_source_mode.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
