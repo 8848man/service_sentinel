@@ -1,13 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:service_sentinel_fe_v2/core/state/project_session_notifier.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/usecases/get_dashboard_matrix.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/usecases/get_dashboard_overview.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_matrics.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_overview.dart';
-import '../../domain/usecases/get_global_dashboard.dart';
-import '../../domain/entities/global_dashboard_metrics.dart';
-import '../../di/repository_providers.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/di/public.dart';
 
 part 'dashboard_provider.g.dart';
 
