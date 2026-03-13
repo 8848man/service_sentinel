@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_matrics.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_overview.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/infrastructure/models/dashboard_metrics_dto.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/infrastructure/models/dashboard_overview_dto.dart';
-import '../../domain/entities/global_dashboard_metrics.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/data/models/dashboard_metrics_dto.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/data/models/dashboard_overview_dto.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
 import '../models/global_dashboard_metrics_dto.dart';
 import 'global_dashboard_data_source.dart';
 
