@@ -1,10 +1,7 @@
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_matrics.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_overview.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
 
 import '../../../../core/error/app_error.dart';
 import '../../../../core/error/result.dart';
-import '../../domain/entities/global_dashboard_metrics.dart';
-import '../../domain/repositories/dashboard_repository.dart';
 import '../data_sources/global_dashboard_data_source.dart';
 
 /// Dashboard repository implementation
