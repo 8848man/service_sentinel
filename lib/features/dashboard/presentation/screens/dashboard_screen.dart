@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/state/project_session_notifier.dart';
 import 'package:service_sentinel_fe_v2/features/dashboard/presentation/providers/dashboard_provider.dart';
-import 'package:service_sentinel_fe_v2/features/dashboard/domain/entities/dashboard_overview.dart';
+import 'package:service_sentinel_fe_v2/features/dashboard/domain/public.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../../../core/auth/application/providers/auth_provider.dart';
+import 'package:service_sentinel_fe_v2/core/auth/application/public.dart';
 
 /// Dashboard screen - Overview of project and services
 /// Layout only. Provider consumption happens in section widgets.
