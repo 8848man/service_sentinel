@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import '../../../../core/error/app_error.dart';
-// import '../../application/providers/project_provider.dart';
+// import '../../presentation/providers/project_provider.dart';
 // import '../../domain/entities/project.dart';
 
 // /// Create project dialog - Form for creating a new project

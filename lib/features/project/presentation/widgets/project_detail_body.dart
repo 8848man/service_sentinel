@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../application/providers/project_provider.dart';
+import '../../presentation/providers/project_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Project Detail Body Widget
