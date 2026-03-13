@@ -3,11 +3,11 @@ import '../../../../core/di/repository_providers.dart';
 import '../../../../core/error/result.dart';
 import '../../../../core/constants/enums.dart';
 import '../../domain/entities/incident.dart';
-import '../use_cases/load_incidents.dart';
-import '../use_cases/acknowledge_incident.dart';
-import '../use_cases/resolve_incident.dart';
-import '../use_cases/update_incident.dart';
-import '../use_cases/request_ai_analysis.dart';
+import '../../domain/usecases/load_incidents.dart';
+import '../../domain/usecases/acknowledge_incident.dart';
+import '../../domain/usecases/resolve_incident.dart';
+import '../../domain/usecases/update_incident.dart';
+import '../../domain/usecases/request_ai_analysis.dart';
 
 part 'incident_provider.g.dart';
 

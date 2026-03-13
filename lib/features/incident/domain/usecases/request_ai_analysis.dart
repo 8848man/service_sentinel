@@ -1,6 +1,6 @@
 import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
-import '../../domain/repositories/incident_repository.dart';
+import '../repositories/incident_repository.dart';
 
 /// Use case: Request AI Analysis
 /// Requests AI analysis for an incident

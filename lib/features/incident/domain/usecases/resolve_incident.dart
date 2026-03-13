@@ -1,7 +1,7 @@
 import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
-import '../../domain/entities/incident.dart';
-import '../../domain/repositories/incident_repository.dart';
+import '../entities/incident.dart';
+import '../repositories/incident_repository.dart';
 
 /// Use case: Resolve Incident
 /// Marks an incident as resolved
