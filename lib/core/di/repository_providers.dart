@@ -20,13 +20,13 @@ import '../../features/incident/data/repositories/incident_repository_impl.dart'
 import '../../features/project/domain/repositories/api_key_repository.dart';
 import '../../features/project/domain/repositories/bootstrap_repository.dart';
 import '../../features/project/domain/repositories/project_repository.dart';
-import '../../features/project/infrastructure/data_sources/local_project_data_source_impl.dart';
-import '../../features/project/infrastructure/data_sources/remote_api_key_data_source.dart';
-import '../../features/project/infrastructure/data_sources/remote_bootstrap_data_source_impl.dart';
-import '../../features/project/infrastructure/data_sources/remote_project_data_source_impl.dart';
-import '../../features/project/infrastructure/repositories/api_key_repository_impl.dart';
-import '../../features/project/infrastructure/repositories/bootstrap_repository_impl.dart';
-import '../../features/project/infrastructure/repositories/project_repository_impl.dart';
+import '../../features/project/data/data_sources/local_project_data_source_impl.dart';
+import '../../features/project/data/data_sources/remote_api_key_data_source.dart';
+import '../../features/project/data/data_sources/remote_bootstrap_data_source_impl.dart';
+import '../../features/project/data/data_sources/remote_project_data_source_impl.dart';
+import '../../features/project/data/repositories/api_key_repository_impl.dart';
+import '../../features/project/data/repositories/bootstrap_repository_impl.dart';
+import '../../features/project/data/repositories/project_repository_impl.dart';
 import '../data/data_source_mode_provider.dart';
 import 'providers.dart';
 
