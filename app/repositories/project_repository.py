@@ -1,8 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
 
-from app.models.project import Project
-from app.schemas.project_schema import ProjectHealth, ProjectResponse
+from app.models.project import Project, ProjectHealth
 
 
 class ProjectRepository:
