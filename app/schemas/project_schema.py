@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict
 
+from app.models.project import ProjectHealth  # re-export for schema consumers
+
 
 class ProjectCreate(BaseModel):
     """Schema for creating a new project"""
@@ -20,15 +22,6 @@ class ProjectHealthSummary(BaseModel):
     total_services: int
     error_services: int
 
-
-class ProjectHealth(BaseModel):
-    """Derived project health (never stored in DB)"""
-    status: str  # "HEALTHY" | "DEGRADED" | "UNKNOWN"
-    total_services: int
-    healthy_services: int
-    error_services: int
-    inactive_services: int
-    active_incidents: int
 
 class ProjectResponse(BaseModel):
     """Schema for project response"""

@@ -1,8 +1,19 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
+from pydantic import BaseModel
 
 from app.core.database import Base
+
+
+class ProjectHealth(BaseModel):
+    """Derived project health (never stored in DB)"""
+    status: str  # "HEALTHY" | "DEGRADED" | "UNKNOWN"
+    total_services: int
+    healthy_services: int
+    error_services: int
+    inactive_services: int
+    active_incidents: int
 
 
 class Project(Base):
