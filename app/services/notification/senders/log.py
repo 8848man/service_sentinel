@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.core.notification.context import NotificationContext
+from app.services.notification.context import NotificationContext
 
 
 class NotificationSender(ABC):

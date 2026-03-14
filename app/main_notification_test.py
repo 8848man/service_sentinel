@@ -1,6 +1,6 @@
 import asyncio
 from app.services.notification.senders.firebase_sender import FirebasePushNotificationSender
-from app.core.notification.context import NotificationContext
+from app.services.notification.context import NotificationContext
 from app.models import Project, Service, Incident, UserDeviceToken
 from app.core.firebase import init_firebase
 from dotenv import load_dotenv

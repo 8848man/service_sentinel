@@ -7,8 +7,8 @@ import httpx
 from sqlalchemy.orm import Session
 
 from app.core.database import SessionLocal
-from app.core.notification.policies.project import ProjectPolicy
-from app.core.notification.policies.service import ServicePolicy
+from app.services.notification.policies.project import ProjectPolicy
+from app.services.notification.policies.service import ServicePolicy
 from app.models.service import Service
 from app.models.health_check import HealthCheck
 from app.repositories.device_token_repository import DeviceTokenRepository

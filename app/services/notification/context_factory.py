@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.core.notification.context import NotificationContext
+from app.services.notification.context import NotificationContext
 from app.models import Project, Service, Incident
 from app.repositories.device_token_repository import DeviceTokenRepository
 

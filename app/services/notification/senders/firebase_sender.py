@@ -1,6 +1,6 @@
 import logging
 
-from app.core.notification.context import NotificationContext
+from app.services.notification.context import NotificationContext
 from app.services.notification.senders.base import NotificationSender
 
 logger = logging.getLogger(__name__)

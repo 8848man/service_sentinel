@@ -2,7 +2,7 @@ import logging
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 
-from app.core.notification.context import NotificationContext
+from app.services.notification.context import NotificationContext
 from app.models.service import Service
 from app.models.health_check import HealthCheck
 from app.models.incident import Incident, IncidentStatus, IncidentSeverity
