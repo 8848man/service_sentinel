@@ -1,0 +1,11 @@
+# ── Firebase deploy cache ──────────────────────────────────────────────────────
+fe/.firebase/
+
+# ── Android generated sources ─────────────────────────────────────────────────
+fe/android/app/src/main/kotlin/com/lattui/
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
