@@ -1,0 +1,17 @@
+
+# 로컬 pc IPv4 주소 특정 (cmd) 
+# ex. IPv4 Address . . . . . : 192.168.0.15
+ipconfig
+
+# 현재 연결된 기기 리스트 -> 디버그 기기 id 특정
+flutter devices
+
+# 
+flutter run -d {device_id} `
+  --release `
+  --dart-define=API_BASE_URL=http://{IPv4}:8000
+
+# 테스트 코드
+flutter run -d R3CR300Z59W `
+  --release `
+  --dart-define=API_BASE_URL=http://192.168.219.102:8000

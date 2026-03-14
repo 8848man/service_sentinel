@@ -1,0 +1,27 @@
+flutter run -d chrome `
+  --web-port 5173 `
+  --dart-define=API_BASE_URL=http://localhost:8000
+
+flutter run -d <device_id> `
+  --dart-define=API_BASE_URL=http://localhost:8000
+
+## find device_id by next command
+flutter devices
+
+## insert device_id in emulator-5554
+flutter run -d emulator-5554 `
+  --release `
+  --dart-define=API_BASE_URL=http://10.0.2.2:8000
+
+## web local testing
+flutter run -d chrome `
+  --web-port 5173 `
+  --dart-define=API_BASE_URL=http://localhost:8000
+
+
+## web release testing
+flutter run -d chrome `
+  --web-port 5173
+
+## l10n gen
+flutter gen-l10n
