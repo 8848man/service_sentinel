@@ -4,19 +4,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import desc, and_, func
 
 from app.models.health_check import HealthCheck
-from app.schemas.health_check_schema import HealthCheckCreate
 
 
 class HealthCheckRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, data: dict | HealthCheckCreate) -> HealthCheck:
-        if isinstance(data, dict):
-            health_check = HealthCheck(**data)
-        else:
-            health_check = HealthCheck(**data.model_dump())
-
+    def create(self, data: dict) -> HealthCheck:
+        health_check = HealthCheck(**data)
         self.db.add(health_check)
         self.db.commit()
         self.db.refresh(health_check)
