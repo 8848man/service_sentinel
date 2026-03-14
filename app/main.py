@@ -9,15 +9,13 @@ from sqlalchemy import text
 
 from dotenv import load_dotenv
 
-from app.api import services, incidents, dashboard
-from app.api import projects, services_v2, incidents_v2, dashboard_v2
 from app.api.v3 import projects as projects_v3, services as services_v3
 from app.api.v3 import incidents as incidents_v3, dashboard as dashboard_v3
 from app.api.v3 import user as user_v3, device_token as device_token_v3
 from app.core.database import get_db, engine, Base
 from app.core.config import settings
 from app.core.firebase import init_firebase
-from app.scheduler import start_scheduler, stop_scheduler
+from app.services.monitoring.scheduler import start_scheduler, stop_scheduler
 
 import os
 
@@ -73,17 +71,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Include routers - V1 (Legacy, un-authenticated)
-app.include_router(services.router, prefix="/api/v1")
-app.include_router(incidents.router, prefix="/api/v1")
-app.include_router(dashboard.router, prefix="/api/v1")
-
-# Include routers - V2 (Project-scoped with authentication)
-app.include_router(projects.router, prefix="/api/v2")
-app.include_router(services_v2.router, prefix="/api/v2")
-app.include_router(incidents_v2.router, prefix="/api/v2")
-app.include_router(dashboard_v2.router, prefix="/api/v2")
 
 # Include routers - V3 (Mandatory authentication with Firebase + Guest, strict project-scoping)
 app.include_router(projects_v3.router, prefix="/api/v3")
