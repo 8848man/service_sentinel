@@ -9,7 +9,7 @@ from app.models.incident import IncidentStatus, IncidentSeverity
 from app.repositories.incident_repository import IncidentRepository
 from app.repositories.service_repository import ServiceRepository
 from app.repositories.ai_analysis_repository import AIAnalysisRepository
-from app.schemas.auth_context import AuthContext
+from app.schemas.auth_context_schema import AuthContext
 from app.schemas.incident_schema import (
     IncidentResponse,
     IncidentWithService,

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.auth_v3 import get_auth_context, verify_project_ownership
 from app.repositories.dashboard_repository import DashboardRepository
-from app.schemas.auth_context import AuthContext
+from app.schemas.auth_context_schema import AuthContext
 from app.schemas.dashboard_schema import DashboardOverview, SystemMetrics, GlobalDashboardMetrics
 
 router = APIRouter(prefix="/projects/{project_id}", tags=["Dashboard (v3)"])

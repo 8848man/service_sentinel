@@ -9,7 +9,7 @@ from app.core.auth_v3 import get_auth_context, verify_project_ownership
 from app.repositories.service_repository import ServiceRepository
 from app.repositories.health_check_repository import HealthCheckRepository
 from app.repositories.incident_repository import IncidentRepository
-from app.schemas.auth_context import AuthContext
+from app.schemas.auth_context_schema import AuthContext
 from app.schemas.service_schema import (
     ServiceCreate,
     ServiceResponse,

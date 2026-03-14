@@ -7,7 +7,7 @@ from app.core.database import get_db
 from app.repositories.user_repository import UserRepository
 from app.repositories.api_key_repository import APIKeyRepository
 from app.repositories.project_repository import ProjectRepository
-from app.schemas.auth_context import AuthContext
+from app.schemas.auth_context_schema import AuthContext
 from app.models.user import User
 
 
