@@ -4,19 +4,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_, desc, or_
 
 from app.models.incident import Incident, IncidentStatus, IncidentSeverity
-from app.schemas.incident_schema import IncidentCreate
 
 
 class IncidentRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, data: IncidentCreate | dict) -> Incident:
-        if isinstance(data, dict):
-            incident = Incident(**data)
-        else:
-            incident = Incident(**data.model_dump())
-
+    def create(self, data: dict) -> Incident:
+        incident = Incident(**data)
         self.db.add(incident)
         self.db.commit()
         self.db.refresh(incident)
