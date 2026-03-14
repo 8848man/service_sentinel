@@ -1,7 +1,7 @@
 from typing import Iterable
-from app.core.notification.context import NotificationContext
-from app.core.notification.decision import NotificationDecision
-from app.core.notification.policies.base import NotificationPolicy
+from app.services.notification.context import NotificationContext
+from app.services.notification.decision import NotificationDecision
+from app.services.notification.policies.base import NotificationPolicy
 
 
 class PolicyChain:

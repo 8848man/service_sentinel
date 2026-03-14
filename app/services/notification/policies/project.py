@@ -1,5 +1,5 @@
-from app.core.notification.policies.base import NotificationPolicy
-from app.core.notification.decision import NotificationDecision
+from app.services.notification.policies.base import NotificationPolicy
+from app.services.notification.decision import NotificationDecision
 
 
 class ProjectPolicy(NotificationPolicy):

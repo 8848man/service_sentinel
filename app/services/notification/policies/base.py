@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.core.notification.decision import NotificationDecision
+from app.services.notification.decision import NotificationDecision
 
 
 class NotificationPolicy(ABC):
