@@ -1,5 +1,6 @@
+import 'package:service_sentinel_fe_v2/features/project/data/data_sources/project_data_source.dart';
+
 import '../../features/project/domain/entities/project.dart';
-import '../../features/project/infrastructure/data_sources/project_data_source.dart';
 import '../error/app_error.dart';
 import 'migration_state.dart';
 

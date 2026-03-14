@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../features/project/infrastructure/data_sources/local_project_data_source_impl.dart';
-import '../../features/project/infrastructure/data_sources/remote_project_data_source_impl.dart';
+import 'package:service_sentinel_fe_v2/features/project/data/data_sources/local_project_data_source_impl.dart';
+import 'package:service_sentinel_fe_v2/features/project/data/data_sources/remote_project_data_source_impl.dart';
 import '../di/providers.dart';
 import 'migration_service.dart';
 import 'migration_state.dart';

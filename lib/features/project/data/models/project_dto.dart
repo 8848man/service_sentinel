@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:service_sentinel_fe_v2/features/project/infrastructure/models/project_health_dto.dart';
+import 'package:service_sentinel_fe_v2/features/project/data/models/project_health_dto.dart';
 import '../../domain/entities/project.dart';
 
 part 'project_dto.freezed.dart';
