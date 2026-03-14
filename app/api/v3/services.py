@@ -41,7 +41,7 @@ async def create_service(
     await verify_project_ownership(auth_context, db)
 
     repo = ServiceRepository(db)
-    return repo.create(project_id=project_id, data=request)
+    return repo.create(project_id=project_id, data=request.model_dump(exclude_unset=True, mode='json'))
 
 
 @router.get("/services", response_model=list[ServiceResponse])
@@ -109,7 +109,7 @@ async def update_service(
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
 
-    service = repo.update(service_id, data)
+    service = repo.update(service_id, data.model_dump(exclude_unset=True))
     return service
 
 
@@ -158,7 +158,7 @@ async def activate_service(
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
 
-    service = repo.update(service_id, ServiceUpdate(is_active=True))
+    service = repo.update(service_id, {"is_active": True})
     return service
 
 
@@ -183,7 +183,7 @@ async def deactivate_service(
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
 
-    service = repo.update(service_id, ServiceUpdate(is_active=False))
+    service = repo.update(service_id, {"is_active": False})
     return service
 
 
