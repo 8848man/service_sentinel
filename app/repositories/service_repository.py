@@ -3,18 +3,15 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 
 from app.models.service import Service, ServiceType, ServiceState
-from app.schemas.service_schema import ServiceCreate, ServiceUpdate
 
 
 class ServiceRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, project_id: int, data: ServiceCreate) -> Service:
+    def create(self, project_id: int, data: dict) -> Service:
         """Create a service within a project"""
-        service = Service(**data.model_dump(exclude_unset=True, mode='json'))
-        # Convert HttpUrl to string
-        service.endpoint_url = str(data.endpoint_url)
+        service = Service(**data)
         service.project_id = project_id
         service.service_state = ServiceState.HEALTHY  # Initialize as healthy
         self.db.add(service)
@@ -68,12 +65,12 @@ class ServiceRepository:
         self.db.refresh(service)
         return service
 
-    def update(self, service_id: int, data: ServiceUpdate) -> Optional[Service]:
+    def update(self, service_id: int, data: dict) -> Optional[Service]:
         service = self.find_by_id(service_id)
         if not service:
             return None
 
-        update_data = data.model_dump(exclude_unset=True)
+        update_data = data
 
         # Convert HttpUrl to string if present
         if 'endpoint_url' in update_data:
