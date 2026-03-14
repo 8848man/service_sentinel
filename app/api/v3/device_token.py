@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.schemas.device_token import DeviceTokenRegisterRequest
+from app.schemas.device_token_schema import DeviceTokenRegisterRequest
 from app.services.device_token_service import DeviceTokenService
 from app.core.auth_v3 import get_firebase_user
 
