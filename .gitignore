@@ -1,0 +1,23 @@
+# ── Secrets & credentials ─────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# Firebase service account & config
+serviceAccountKey.json
+google-services.json
+GoogleService-Info.plist
+fe/lib/firebase_options.dart
+fe/lib/firebase_options_auth.dart
+
+# ── Firebase deploy cache ──────────────────────────────────────────────────────
+fe/.firebase/
+
+# ── Android generated sources ─────────────────────────────────────────────────
+fe/android/app/src/main/kotlin/com/lattui/
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+*.iml

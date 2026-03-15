@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"Remove-Item -Recurse -Force 'D:/projects/service_sentinel/fe/lib/features/api_monitoring/data'\" && echo \"removed\")",
+      "Bash(/tmp/true_violations.txt:*)",
+      "Read(//tmp/**)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(echo \"=== $f ===\")",
+      "Read(//d/projects/service_sentinel/**)",
+      "Bash(done)"
+    ]
+  }
+}

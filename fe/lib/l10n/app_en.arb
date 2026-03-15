@@ -1,0 +1,575 @@
+{
+  "@@locale": "en",
+
+  "common_ok": "OK",
+  "common_cancel": "Cancel",
+  "common_confirm": "Confirm",
+  "common_delete": "Delete",
+  "common_edit": "Edit",
+  "common_save": "Save",
+  "common_loading": "Loading...",
+  "common_error": "Error",
+  "common_success": "Success",
+  "common_retry": "Retry",
+  "common_back": "Back",
+  "common_next": "Next",
+  "common_skip": "Skip",
+  "common_done": "Done",
+  "common_or": "OR",
+  "common_close": "Close",
+  "common_create": "Create",
+  "common_creating": "Creating...",
+
+  "app_title": "Service Sentinel",
+  "app_subtitle": "AI-Powered API Monitoring",
+
+  "navigation_dashboard": "Dashboard",
+  "navigation_services": "Services",
+  "navigation_incidents": "Incidents",
+  "navigation_settings": "Settings",
+
+  "auth_login": "Login",
+  "auth_logout": "Logout",
+  "auth_signup": "Sign Up",
+  "auth_email": "Email",
+  "auth_password": "Password",
+  "auth_forgot_password": "Forgot Password?",
+  "auth_guest_mode": "Continue as Guest",
+  "auth_guest_mode_desc": "Use the app without signing in. Your data stays on this device.",
+  "auth_enter_as_guest": "Enter as Guest",
+  "auth_sign_in_email": "Sign in with Email",
+  "auth_sign_in_google": "Sign in with Google Email",
+  "auth_sign_in_desc": "Access your projects from any device with cloud sync.",
+  "auth_dont_have_account": "Don't have an account? Sign up",
+  "auth_signing_in": "Signing in...",
+  "auth_login_failed": "Login failed. Please try again.",
+  "auth_creating_account": "Creating account...",
+  "auth_sign_up": "Sign Up",
+  "auth_sign_up_email": "Sign Up with Email",
+  "auth_sign_up_desc": "Sign up to create a new account",
+  "auth_signup_failed": "Sign up failed. Please try again.",
+  "auth_sign_up_cancel" : "Cancel",
+  "auth_migration_dialog_title": "Migrate Local Projects?",
+  "auth_migration_dialog_message": "You have local projects stored on this device. Would you like to migrate them to the cloud?",
+  "auth_migration_cloud_sync": "Cloud Sync",
+  "auth_migration_cloud_sync_desc": "Access your projects from any device",
+  "auth_migration_backup": "Backup",
+  "auth_migration_backup_desc": "Your data is safely backed up",
+  "auth_migration_team": "Team Collaboration",
+  "auth_migration_team_desc": "Share projects with team members",
+  "auth_skip_for_now": "Skip for Now",
+  "auth_migrate_now": "Migrate Now",
+
+  "dashboard_title": "Dashboard",
+  "dashboard_welcome_back": "Welcome back!",
+  "dashboard_guest_mode": "Guest Mode",
+  "dashboard_current_project": "Current Project: {projectName}",
+  "@dashboard_current_project": {
+    "placeholders": {
+      "projectName": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboard_no_project_selected": "No project selected. Please select a project to start monitoring.",
+  "dashboard_quick_stats": "Quick Stats",
+  "dashboard_services": "Services",
+  "dashboard_incidents": "Incidents",
+  "dashboard_healthy": "Healthy",
+  "dashboard_issues": "Issues",
+
+  "services_title": "Services",
+  "services_monitored_services": "Monitored Services",
+  "services_monitored_services_desc": "APIs and endpoints being monitored",
+  "services_add_service": "Add\nService",
+  "services_failed_to_load": "Failed to load services",
+  "services_no_services_yet": "No Services Yet",
+  "services_no_services_message": "Add your first service to start monitoring",
+  "services_no_services_recommended_service": "Add recommended service set",
+  "services_service_name": "Service Name",
+  "services_service_name_required": "Service Name *",
+  "services_service_name_hint": "My API Service",
+  "services_description_optional": "Description (Optional)",
+  "services_description_hint": "Enter service description",
+  "services_endpoint_url": "Endpoint URL",
+  "services_endpoint_url_required": "Endpoint URL *",
+  "services_endpoint_url_hint": "https://api.example.com/health",
+  "services_http_method": "HTTP Method",
+  "services_http_method_required": "HTTP Method *",
+  "services_service_type": "Service Type",
+  "services_service_type_required": "Service Type *",
+  "services_timeout_seconds": "Timeout (seconds)",
+  "services_timeout_seconds_required": "Timeout (seconds) *",
+  "services_timeout_hint": "10",
+  "services_check_interval_seconds": "Check Interval (seconds)",
+  "services_check_interval_seconds_required": "Check Interval (seconds) *",
+  "services_check_interval_hint": "60",
+  "services_failure_threshold": "Failure Threshold",
+  "services_failure_threshold_required": "Failure Threshold *",
+  "services_failure_threshold_desc": "Consecutive failures before incident",
+  "services_failure_threshold_hint": "3",
+  "services_advanced_settings": "Advanced Settings",
+  "services_service_details": "Service Details",
+  "services_manual_check_coming_soon": "Manual check feature coming soon",
+  "services_edit_coming_soon": "Edit feature coming soon",
+  "services_deactivate_coming_soon": "Deactivate feature coming soon",
+  "services_deactivate": "Deactivate",
+  "services_delete_service": "Delete Service",
+  "services_delete_confirmation_message": "Are you sure you want to delete this service? This will remove all monitoring data. This action cannot be undone.",
+  "services_service_deleted": "Service deleted successfully",
+  "services_failed_to_delete": "Failed to delete service: {error}",
+  "@services_failed_to_delete": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "services_check_interval": "Check interval: {seconds}s",
+  "@services_check_interval": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "services_failure_threshold_value": "Failure threshold: {count}",
+  "@services_failure_threshold_value": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "services_last_checked": "Last checked: {time}",
+  "@services_last_checked": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "services_just_now": "Just now",
+  "services_minutes_ago": "{minutes}m ago",
+  "@services_minutes_ago": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "services_hours_ago": "{hours}h ago",
+  "@services_hours_ago": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "services_days_ago": "{days}d ago",
+  "@services_days_ago": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "services_active": "Active",
+  "services_inactive": "Inactive",
+  "services_error_loading_service": "Error loading service",
+  "services_endpoint": "Endpoint",
+  "services_method": "Method",
+  "services_type": "Type",
+  "services_check_interval_label": "Check Interval",
+  "services_timeout_label": "Timeout",
+  "services_failure_threshold_label": "Failure Threshold",
+  "services_last_checked_label": "Last Checked",
+  "services_statistics_last_7_days": "Statistics (Last 7 Days)",
+  "services_unable_to_load_statistics": "Unable to load statistics",
+  "services_uptime": "Uptime",
+  "services_total_checks": "Total Checks",
+  "services_successful": "Successful",
+  "services_failed": "Failed",
+  "services_avg_latency": "Avg Latency",
+  "services_health_check_history": "Health Check History",
+  "services_health_check_history_placeholder": "Health check history will be displayed here",
+  "services_related_incidents": "Related Incidents",
+  "services_related_incidents_placeholder": "Related incidents will be displayed here",
+
+  "incidents_title": "Incidents",
+  "incidents_desc": "Service failure events and alerts",
+  "incidents_failed_to_load": "Failed to load incidents",
+  "incidents_no_incidents": "No Incidents",
+  "incidents_all_services_running": "All services are running smoothly",
+  "incidents_open_incidents": "Open Incidents",
+  "incidents_resolved_incidents": "Resolved Incidents",
+  "incidents_detected": "Detected: {time}",
+  "@incidents_detected": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "incidents_failures_count": "{count} failures",
+  "@incidents_failures_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "incidents_timeline": "Timeline",
+  "incidents_timeline_detected": "Detected",
+  "incidents_timeline_acknowledged": "Acknowledged",
+  "incidents_timeline_resolved": "Resolved",
+  "incidents_ai_analysis_available": "AI Analysis Available",
+  "incidents_ai_analysis_in_progress": "AI Analysis In Progress",
+  "incidents_root_cause_analysis_completed": "Root cause analysis completed",
+  "incidents_root_cause_analysis_generating": "Root cause analysis is being generated",
+  "incidents_incident_details": "Incident Details",
+  "incidents_request_ai_analysis": "Request AI Analysis",
+  "incidents_acknowledge": "Acknowledge",
+  "incidents_resolve": "Resolve",
+  "incidents_acknowledged_success": "Incident acknowledged successfully",
+  "incidents_failed_to_acknowledge": "Failed to acknowledge: {error}",
+  "@incidents_failed_to_acknowledge": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "incidents_resolve_incident": "Resolve Incident",
+  "incidents_resolve_confirmation": "Are you sure you want to mark this incident as resolved?",
+  "incidents_resolved_success": "Incident resolved successfully",
+  "incidents_failed_to_resolve": "Failed to resolve: {error}",
+  "@incidents_failed_to_resolve": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "incidents_request_analysis": "Request Analysis",
+  "incidents_request_analysis_dialog_title": "Request AI Analysis",
+  "incidents_request_analysis_dialog_message": "Request AI to analyze this incident and provide root cause analysis, debug steps, and suggested actions?\n\nAnalysis may take a few moments to complete.",
+  "incidents_ai_analysis_requested": "AI analysis requested. It will be available shortly.",
+  "incidents_failed_to_request_analysis": "Failed to request analysis: {error}",
+  "@incidents_failed_to_request_analysis": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "incidents_statistics": "Statistics",
+  "incidents_consecutive_failures": "Consecutive Failures",
+  "incidents_total_affected_checks": "Total Affected Checks",
+  "incidents_incident_not_found": "Incident not found",
+  "incidents_ai_analysis_view_coming_soon": "AI Analysis view coming soon",
+  "incidents_view_analysis": "View Analysis",
+  "incidents_ai_analysis_request_sent": "AI Analysis request sent",
+  "incidents_ai_root_cause": "AI Root Cause Analysis",
+  "incidents_generated_by": "Generated by {model}",
+  "@incidents_generated_by": {
+    "placeholders": {
+      "model": {
+        "type": "String"
+      }
+    }
+  },
+  "incidents_root_cause_hypothesis": "Root Cause Hypothesis",
+  "incidents_debug_checklist": "Debug Checklist",
+  "incidents_suggested_actions": "Suggested Actions",
+  "incidents_no_analysis_available": "No AI Analysis Available",
+  "incidents_analysis_not_available": "Analysis Not Available",
+  "incidents_error_loading": "Error loading incident",
+  "incidents_service_id": "Service ID",
+  "incidents_detected_at": "Detected At",
+  "incidents_acknowledged_at": "Acknowledged At",
+  "incidents_resolved_at": "Resolved At",
+  "incidents_ai_analysis_complete": "AI Analysis Complete",
+  "incidents_ai_analysis_pending": "AI Analysis Pending",
+  "incidents_ai_root_cause_available": "AI Root Cause Analysis Available",
+  "incidents_view_ai_insights": "View AI-generated insights, root cause hypothesis, and suggested actions",
+  "incidents_related_health_checks": "Related Health Checks",
+  "incidents_related_health_checks_placeholder": "Related health checks will be displayed here",
+  "incidents_related_error_patterns": "Related Error Patterns",
+  "incidents_no_analysis_message": "AI analysis has not been generated for this incident yet.\nRequest an analysis from the incident detail view.",
+  "incidents_confidence_score": "Confidence Score",
+  "incidents_confidence_high": "High confidence in the analysis",
+  "incidents_confidence_moderate": "Moderate confidence - manual verification recommended",
+  "incidents_confidence_low": "Low confidence - requires further investigation",
+  "incidents_analysis_metadata": "Analysis Metadata",
+  "incidents_metadata_model": "Model",
+  "incidents_metadata_tokens": "Tokens",
+  "incidents_metadata_tokens_detail": "{total} (prompt: {prompt}, completion: {completion})",
+  "@incidents_metadata_tokens_detail": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "prompt": {
+        "type": "int"
+      },
+      "completion": {
+        "type": "int"
+      }
+    }
+  },
+  "incidents_metadata_cost": "Cost",
+  "incidents_metadata_duration": "Duration",
+  "incidents_metadata_duration_value": "{milliseconds}ms",
+  "@incidents_metadata_duration_value": {
+    "placeholders": {
+      "milliseconds": {
+        "type": "int"
+      }
+    }
+  },
+  "incidents_metadata_analyzed_at": "Analyzed At",
+  "incidents_failed_to_load_analysis": "Failed to Load Analysis",
+
+  "projects_title": "Projects",
+  "projects_your_projects": "Your Projects",
+  "projects_new_project": "New Project",
+  "projects_failed_to_load": "Failed to load projects",
+  "projects_error_selecting": "Error selecting project: {error}",
+  "@projects_error_selecting": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "projects_guest_limit_reached": "Guest Limit Reached",
+  "projects_guest_limit_message": "Guest users are limited to 1 project. Sign in with Google to create unlimited projects and access advanced features.",
+  "projects_sign_in": "Sign In",
+  "projects_create_new_project": "Create New Project",
+  "projects_project_name": "Project Name",
+  "projects_project_name_required": "Project Name *",
+  "projects_project_name_hint": "Enter project name",
+  "projects_description_optional": "Description (Optional)",
+  "projects_description_hint": "Enter project description",
+  "projects_project_details": "Project Details",
+  "projects_edit_coming_soon": "Edit feature coming soon",
+  "projects_delete_project": "Delete Project",
+  "projects_delete_confirmation": "Are you sure you want to delete this project? This action cannot be undone.",
+  "projects_project_deleted": "Project deleted successfully",
+  "projects_failed_to_delete": "Failed to delete project: {error}",
+  "@projects_failed_to_delete": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "projects_no_projects_yet": "No Projects Yet",
+  "projects_create_first_project": "Create your first project to start monitoring your services",
+  "projects_failed_to_load_api_keys": "Failed to load API keys: {error}",
+  "@projects_failed_to_load_api_keys": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "projects_no_api_key_warning": "No API key configured for this project. Please create one in settings.",
+
+  "settings_title": "Settings",
+  "settings_general": "General",
+  "settings_theme": "Theme",
+  "settings_language": "Language",
+  "settings_notifications" : "Notificaion",
+  "settings_notification_subtitle" : "Request notification permission",
+  "settings_light": "Light",
+  "settings_dark": "Dark",
+  "settings_blue": "Blue",
+  "settings_select_theme": "Select Theme",
+  "settings_select_language": "Select Language",
+  "settings_english": "English",
+  "settings_korean": "한국어 (Korean)",
+  "settings_change_project": "Change Project",
+  "settings_change_project_desc": "Select a different project",
+  "settings_no_project_selected": "No Project Selected",
+  "settings_no_project_desc": "Select a project to get started",
+  "settings_select_project": "Select Project",
+  "settings_signed_in_as": "Signed in as",
+  "settings_sign_out": "Sign Out",
+  "settings_sign_out_confirmation": "Are you sure you want to sign out?",
+  "settings_signed_out": "Signed out successfully",
+  "settings_delete_account": "Delete Account",
+  "settings_delete_account_confirmation": "Are you sure you want to delete this account and included informations?",
+  "settings_deleted_account": "your account deleted successfully",
+  "settings_api_key": "API Key",
+  "settings_authenticated": "Authenticated",
+  "settings_api_key_desc": "API key for project: {project}",
+  "@settings_api_key_desc": {
+    "placeholders": {
+      "project": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_active_key": "Active key: {keyName}",
+  "@settings_active_key": {
+    "placeholders": {
+      "keyName": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_no_project_api_key": "No project selected. Select a project to view API key.",
+  "settings_no_api_key": "No API Key",
+  "settings_security_warning": "Keep your API key secure. Do not share it publicly.",
+  "settings_switch_key": "Switch Key",
+  "settings_switch_key_response": "Switch Key is preparation",
+  "settings_create_key": "Create Key",
+  "settings_create_key_response": "Create Key is preparation",
+  "settings_api_key_copied": "API key copied to clipboard",
+  "settings_copy_to_clipboard": "Copy to clipboard",
+
+  "analysis_title": "AI Analysis Overview",
+  "analysis_refresh": "Refresh Analysis",
+  "analysis_refresh_coming_soon": "Refresh feature coming soon",
+  "analysis_filter": "Filter",
+  "analysis_filter_coming_soon": "Filter feature coming soon",
+  "analysis_bulk_request_coming_soon": "Bulk analysis request coming soon",
+  "analysis_request_analysis": "Request Analysis",
+  "analysis_loading": "Loading AI Analysis...",
+  "analysis_summary": "Analysis Summary",
+  "analysis_total_analyses": "Total Analyses",
+  "analysis_pending": "Pending",
+  "analysis_completed": "Completed",
+  "analysis_failed": "Failed",
+  "analysis_recent_analyses": "Recent AI Analyses",
+  "analysis_no_analyses": "No AI analyses yet",
+  "analysis_no_analyses_message": "Request AI analysis on incidents to get started",
+  "analysis_insights_recommendations": "Insights & Recommendations",
+  "analysis_ai_powered_insights": "AI-Powered Insights",
+  "analysis_insights_message": "AI will analyze your incident patterns and provide recommendations:",
+  "analysis_insight_root_cause": "Root cause identification",
+  "analysis_insight_pattern_detection": "Pattern detection across incidents",
+  "analysis_insight_remediation": "Suggested remediation steps",
+  "analysis_insight_prevention": "Prevention recommendations",
+  "analysis_auth_required": "Authentication Required",
+  "analysis_auth_required_message": "AI analysis is only available for authenticated users with server access.",
+
+  "service_type_http_api": "HTTP API",
+  "service_type_https_api": "HTTPS API",
+  "service_type_gcp_endpoint": "GCP Endpoint",
+  "service_type_firebase": "Firebase",
+  "service_type_websocket": "WebSocket",
+  "service_type_grpc": "gRPC",
+
+  "http_method_get": "GET",
+  "http_method_post": "POST",
+  "http_method_put": "PUT",
+  "http_method_delete": "DELETE",
+  "http_method_patch": "PATCH",
+  "http_method_head": "HEAD",
+
+  "incident_status_open": "Open",
+  "incident_status_investigating": "Investigating",
+  "incident_status_resolved": "Resolved",
+  "incident_status_acknowledged": "Acknowledged",
+
+  "incident_severity_critical": "Critical",
+  "incident_severity_high": "High",
+  "incident_severity_medium": "Medium",
+  "incident_severity_low": "Low",
+
+  "service_state_healthy": "Healthy",
+  "service_state_error": "Error",
+  "service_state_inactive": "Inactive",
+
+  "project_health_healthy": "Healthy",
+  "project_health_degraded": "Degraded",
+  "project_health_unknown": "Unknown",
+
+  "error_general": "An error occurred. Please try again.",
+  "error_network": "Network error. Please check your connection.",
+  "error_unauthorized": "Unauthorized. Please login again.",
+  "error_not_found": "Resource not found.",
+  "error_server": "Server error. Please try again later.",
+  "error_validation": "Validation error. Please check your input.",
+  "error_storage": "Storage error. Please try again.",
+  "error_undefined": "Unknown error occurred.",
+  "error_analysis": "AI analysis error. Please try again.",
+  "error_guest_limit": "Guest project limit reached. Please sign in.",
+  "error_service_name_required": "Service name is required",
+  "error_failed_to_create_service": "Failed to create service",
+  "error_auth_unavailable": "Authentication state unavailable",
+  "error_guest_limit": "guest only can create 1 project",
+  "error_failed_to_create_project": "Failed to create project",
+  "error_failed_to_bootstrap_guest": "Failed to bootstrap guest user",
+  "error_timeout": "Request timed out. Please try again.",
+  "error_connection_failed": "Connection failed. Please check your network.",
+  "error_invalid_response": "Invalid server response.",
+  "error_firebase_auth": "Authentication error occurred.",
+  "error_firebase_user_not_found": "User not found.",
+  "error_firebase_wrong_password": "Incorrect password.",
+  "error_firebase_email_in_use": "Email address is already in use.",
+  "error_firebase_weak_password": "Password is too weak.",
+  "error_firebase_invalid_email": "Invalid email address.",
+
+  "validation_required": "This field is required",
+  "validation_email_invalid": "Please enter a valid email address",
+  "validation_password_min_length": "Password must be at least {length} characters",
+  "@validation_password_min_length": {
+    "placeholders": {
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "validation_url_invalid": "Please enter a valid URL",
+  "validation_number_min": "Value must be at least {min}",
+  "@validation_number_min": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validation_number_max": "Value must be at most {max}",
+  "@validation_number_max": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validation_field_required": "{field} is required",
+  "@validation_field_required": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "validation_invalid_number": "Invalid number",
+  "validation_url_protocol": "URL must start with http:// or https://",
+  "validation_number_between": "Value must be between {min} and {max}",
+  "@validation_number_between": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validation_max_length": "Cannot exceed {max} characters",
+  "@validation_max_length": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validation_project_name_required": "Project name is required",
+  "validation_project_name_max_length": "Project name cannot exceed 100 characters"
+}

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s \"D:\\\\projects\\\\flutter\\\\service_sentinel_fe\\\\lib\")",
+      "Bash(flutter clean:*)",
+      "Bash(flutter pub get:*)",
+      "Bash(flutter pub run build_runner build:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(findstr:*)",
+      "Bash(Select-String -Pattern \"error -\")",
+      "Bash(Measure-Object)",
+      "Bash(echo \"\n\n---\n\n## Step 4: Auth-Aware Data Flow and Migration \\(COMPLETED\\)\n\nStep 4 implements complete auth-aware data handling with automatic switching between local and remote data sources.\n\n### Key Implementations\n\n1. **DataSourceMode Provider** - Single source of truth for data source selection\n2. **Local Data Sources** - Hive-based storage for guest users\n3. **Remote Data Sources** - REST API integration for authenticated users\n4. **Repository Facades** - Auto-switching between local/remote\n5. **Migration System** - One-time data upload from local to server\n6. **Provider Wiring** - All repositories connected to real implementations\n\n### Files Created: 25 new/updated files\n\n- Core infrastructure \\(7 files\\)\n- Data source implementations \\(10 files\\)\n- Repository facades \\(4 files\\)\n- UI integration \\(4 files updated\\)\n\n### Architecture Guarantees\n\n✅ Automatic data source switching based on auth state\n✅ UI never checks auth state directly\n✅ No implicit data merging\n✅ User-controlled migration\n✅ Complete separation of concerns\n\n**Status**: Complete and production-ready\n**Date**: 2026-01-16\")",
+      "Bash(ls:*)",
+      "Bash(dir:*)",
+      "Bash(if exist \"lib\\\\core\\\\infrastructure\\\\guest_identification_service.dart\" del \"lib\\\\core\\\\infrastructure\\\\guest_identification_service.dart\")",
+      "Bash(dart run build_runner build:*)",
+      "Bash(find:*)",
+      "Bash(flutter gen-l10n:*)"
+    ]
+  }
+}
