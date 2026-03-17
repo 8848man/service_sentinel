@@ -21,9 +21,9 @@ class _PreviewSectionState extends State<PreviewSection> {
   bool _showSwipeCaption = true;
 
   static const _screens = [
-    (assetPath: 'screens/project_list.jpg', widthScale: 0.88),
-    (assetPath: 'screens/dashboard.jpg', widthScale: 1.0),
-    (assetPath: 'screens/incident.jpg', widthScale: 0.88),
+    (assetPath: 'assets/screens/project_list.jpg', widthScale: 0.88),
+    (assetPath: 'assets/screens/dashboard.jpg', widthScale: 1.0),
+    (assetPath: 'assets/screens/incident.jpg', widthScale: 0.88),
   ];
 
   @override
@@ -131,13 +131,18 @@ class _PreviewSectionState extends State<PreviewSection> {
                           ),
                         ),
                         const SizedBox(width: SSSpacing.xl),
-                        SSScrollReveal(
-                          delay: const Duration(milliseconds: 200),
-                          child: _PhoneWithCaption(
-                            assetPath: _screens[2].assetPath,
-                            caption: captions[2],
-                            widthScale: _screens[2].widthScale,
-                          ),
+                        // SSScrollReveal(
+                        //   delay: const Duration(milliseconds: 200),
+                        //   child: _PhoneWithCaption(
+                        //     assetPath: _screens[2].assetPath,
+                        //     caption: captions[2],
+                        //     widthScale: _screens[2].widthScale,
+                        //   ),
+                        // ),
+                        _PhoneWithCaption(
+                          assetPath: _screens[2].assetPath,
+                          caption: captions[2],
+                          widthScale: _screens[2].widthScale,
                         ),
                       ],
                     ),

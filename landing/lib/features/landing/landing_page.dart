@@ -63,7 +63,7 @@ class _LandingPageState extends State<LandingPage> {
                 const TargetSection(),
                 const FeaturesSection(),
                 const PreviewSection(),
-                const HandySection(),
+                // const HandySection(),
                 DownloadSection(key: _downloadKey),
                 const CTASection(),
               ],

@@ -1,0 +1,5 @@
+# 타겟 연결 (최초 1회)
+firebase target:apply hosting sentinel-web service-sentinel-web
+
+## service sentnel web deploy command
+firebase deploy --only hosting:sentinel-web

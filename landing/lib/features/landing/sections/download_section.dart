@@ -13,7 +13,7 @@ class DownloadSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strings  = context.watch<LocaleNotifier>().strings;
+    final strings = context.watch<LocaleNotifier>().strings;
     final isMobile = MediaQuery.sizeOf(context).width < SSBreakpoint.tablet;
 
     final buttons = [
@@ -22,18 +22,21 @@ class DownloadSection extends StatelessWidget {
         label: strings.downloadAppStore,
         sublabel: strings.downloadAppStoreSub,
         url: 'https://apps.apple.com',
+        isComingSoon: true,
       ),
       DownloadButtonModel(
         icon: Icons.android_rounded,
         label: strings.downloadGooglePlay,
         sublabel: strings.downloadGooglePlaySub,
-        url: 'https://play.google.com',
+        url:
+            'https://play.google.com/store/apps/details?id=com.lattui.service_sentinel_fe_v2&hl=ko',
       ),
       DownloadButtonModel(
         icon: Icons.language_rounded,
         label: strings.downloadWeb,
         sublabel: strings.downloadWebSub,
-        isComingSoon: true,
+        url: 'https://service-sentinel-web.web.app',
+        // isComingSoon: true,
       ),
     ];
 
@@ -73,7 +76,6 @@ class DownloadSection extends StatelessWidget {
                 ]),
               ),
               const SizedBox(height: SSSpacing.xxl),
-
               isMobile
                   ? Column(children: [
                       SSScrollReveal(

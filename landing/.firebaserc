@@ -5,8 +5,8 @@
   "targets": {
     "lattui-auth": {
       "hosting": {
-        "sentinel-web": [
-          "service-sentinel-web"
+        "sentinel-landing": [
+          "service-sentinel-landing"
         ]
       }
     }

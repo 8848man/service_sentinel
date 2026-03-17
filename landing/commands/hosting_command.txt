@@ -1,0 +1,5 @@
+# 호스팅 타겟 연결 (최초 1회)
+firebase target:apply hosting sentinel-landing service-sentinel-landing
+
+# 호스팅 배포
+firebase deploy --only hosting:sentinel-landing

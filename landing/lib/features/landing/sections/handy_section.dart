@@ -14,8 +14,12 @@ class HandySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strings  = context.watch<LocaleNotifier>().strings;
+    final strings = context.watch<LocaleNotifier>().strings;
     final isMobile = MediaQuery.sizeOf(context).width < SSBreakpoint.tablet;
+
+    const _screens = [
+      (assetPath: 'assets/screens/dashboard.jpg', widthScale: 1.0),
+    ];
 
     final mobileCard = SSScrollReveal(
       delay: Duration.zero,
@@ -40,7 +44,7 @@ class HandySection extends StatelessWidget {
             Center(
               child: SSPhoneMockup(
                 width: isMobile ? 120 : 150,
-                child: _ScreenImg('assets/screens/dashboard.png'),
+                child: _ScreenImg(_screens[0].assetPath),
               ),
             ),
             const SizedBox(height: SSSpacing.xl),
@@ -75,28 +79,23 @@ class HandySection extends StatelessWidget {
               ),
               const SizedBox(width: SSSpacing.sm),
               SSBadge(
-                  label: strings.handyWebBadge,
-                  variant: SSBadgeVariant.info),
+                  label: strings.handyWebBadge, variant: SSBadgeVariant.info),
             ]),
             const SizedBox(height: SSSpacing.xl + 20),
             SizedBox(
               height: 200,
               child: SSBrowserMockup(
-                child: _ScreenImg('assets/screens/dashboard.png'),
+                child: _ScreenImg('assets/screens/dashboard.jpg'),
               ),
             ),
             const SizedBox(height: SSSpacing.xl),
             _Bullet(
-                icon: Icons.dashboard_rounded,
-                label: strings.handyWebBullet1),
+                icon: Icons.dashboard_rounded, label: strings.handyWebBullet1),
+            const SizedBox(height: SSSpacing.md),
+            _Bullet(icon: Icons.group_rounded, label: strings.handyWebBullet2),
             const SizedBox(height: SSSpacing.md),
             _Bullet(
-                icon: Icons.group_rounded,
-                label: strings.handyWebBullet2),
-            const SizedBox(height: SSSpacing.md),
-            _Bullet(
-                icon: Icons.analytics_rounded,
-                label: strings.handyWebBullet3),
+                icon: Icons.analytics_rounded, label: strings.handyWebBullet3),
           ],
         ),
       ),
@@ -134,7 +133,6 @@ class HandySection extends StatelessWidget {
                 ]),
               ),
               const SizedBox(height: SSSpacing.xxl),
-
               isMobile
                   ? Column(children: [
                       mobileCard,
@@ -194,8 +192,7 @@ class _ScreenImg extends StatelessWidget {
       errorBuilder: (_, __, ___) => Container(
         color: const Color(0xFF0A1628),
         child: const Center(
-          child: Icon(Icons.image_rounded,
-              color: SSColors.textMuted, size: 32),
+          child: Icon(Icons.image_rounded, color: SSColors.textMuted, size: 32),
         ),
       ),
     );
