@@ -218,6 +218,20 @@ class AIAnalysisService:
         if incident.ai_analysis_completed and not force_reanalyze:
             return self.analysis_repo.find_by_incident_id(incident.id)
 
+        if force_reanalyze:
+            existing = self.analysis_repo.find_by_incident_id(incident.id)
+            if existing:
+                try:
+                    self.analysis_repo.delete(existing)
+                except Exception:
+                    logger.exception(
+                        "Failed to delete existing analysis for incident %s before re-analysis",
+                        incident.id,
+                    )
+                    raise RuntimeError(
+                        f"Could not replace existing analysis for incident {incident.id}"
+                    )
+
         start_time = time.time()
 
         try:
