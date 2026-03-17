@@ -78,15 +78,11 @@ app/
 ├── api/
 │   └── v3/                     ← all active routers (v1/v2 removed)
 ├── core/                       ← config, database, auth, firebase
-│                                  Note: core/auth.py is a legacy v1/v2 leftover
-│                                  (JWT-based using python-jose/passlib). It is not
-│                                  imported by any v3 code and can be removed.
 ├── models/                     ← SQLAlchemy ORM models
 ├── repositories/               ← database access layer
 ├── schemas/                    ← Pydantic request/response schemas
 └── services/
     ├── monitoring/              ← monitoring worker + scheduler
-    │                              Note: monitoring/usecase.py is an empty dead file.
     ├── notification/            ← notification policy evaluation and dispatch
     │   ├── channels/            ← FCM, Email, Slack, Webhook channel implementations
     │   ├── policies/            ← per-resource notification policies

@@ -72,6 +72,6 @@ API monitoring platform. Users register services (API endpoints). The system per
 
 1. **Project ownership exclusivity**: `user_id` and `guest_key` are mutually exclusive — exactly one must be set.
 2. **Incident threshold**: an incident is created when the count of failed health checks within a rolling time window of `(check_interval_seconds / 60) × failure_threshold` minutes reaches `failure_threshold`. This is a time-window failure count, not a strictly consecutive check count. Once an open incident exists for a service, each subsequent failure increments its `consecutive_failures` counter directly.
-3. **One AI analysis per incident**: `AIAnalysis.incident_id` has a unique constraint in the database. **Known issue**: the `force_reanalyze=True` path in `AIAnalysisService.analyze_incident()` bypasses the application-level guard and calls `analysis_repo.create()` without first deleting the existing record, which will raise a DB unique constraint violation at runtime.
+3. **One AI analysis per incident**: `AIAnalysis.incident_id` has a unique constraint in the database. When `force_reanalyze=True`, `AIAnalysisService.analyze_incident()` deletes the existing record before calling `create()`.
 4. **Notification precedence**: service-level `notification_enabled` overrides project-level.
 5. **Duplicate FCM token prevention**: `UserDeviceToken.token` has a unique constraint across all users.
