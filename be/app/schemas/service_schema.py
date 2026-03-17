@@ -31,6 +31,7 @@ class ServiceUpdate(BaseModel):
     check_interval_seconds: Optional[int] = Field(None, ge=10, le=3600)
     failure_threshold: Optional[int] = Field(None, ge=1, le=10)
     is_active: Optional[bool] = None
+    notification_enabled: Optional[bool] = None
 
 
 class ServiceResponse(BaseModel):

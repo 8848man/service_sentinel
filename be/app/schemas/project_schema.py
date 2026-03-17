@@ -16,6 +16,7 @@ class ProjectUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=100)
     description: Optional[str] = None
     is_active: Optional[bool] = None
+    notification_enabled: Optional[bool] = None
 
 class ProjectHealthSummary(BaseModel):
     status: str  # "HEALTHY" | "DEGRADED" | "UNKNOWN"
