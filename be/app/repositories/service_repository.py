@@ -88,7 +88,8 @@ class ServiceRepository:
                 service.service_state = ServiceState.ERROR if has_incident else ServiceState.HEALTHY
 
         for key, value in update_data.items():
-            setattr(service, key, value)
+            if value is not None:
+                setattr(service, key, value)
 
         self.db.commit()
         self.db.refresh(service)
