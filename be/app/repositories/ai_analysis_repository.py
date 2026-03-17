@@ -19,6 +19,10 @@ class AIAnalysisRepository:
     def find_by_id(self, analysis_id: int) -> Optional[AIAnalysis]:
         return self.db.query(AIAnalysis).filter(AIAnalysis.id == analysis_id).first()
 
+    def delete(self, analysis: AIAnalysis) -> None:
+        self.db.delete(analysis)
+        self.db.commit()
+
     def find_by_incident_id(self, incident_id: int) -> Optional[AIAnalysis]:
         return self.db.query(AIAnalysis).filter(AIAnalysis.incident_id == incident_id).first()
 

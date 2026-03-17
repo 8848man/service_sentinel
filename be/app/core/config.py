@@ -14,8 +14,7 @@ class Settings(BaseSettings):
     # AI Configuration
     AI_ENABLED: bool = False
     AI_API_KEY: Optional[str] = None
-    AI_MODEL: str = "gpt-4-turbo"
-    AI_API_URL: str = "https://api.openai.com/v1/chat/completions"
+    AI_MODEL: str = "gemini-pro"
     AI_MAX_TOKENS: int = 2000
     AI_TEMPERATURE: float = 0.3
 
