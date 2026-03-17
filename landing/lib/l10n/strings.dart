@@ -228,7 +228,7 @@ class SSStringsEn extends SSStrings {
   @override
   String get downloadWeb => 'Web App';
   @override
-  String get downloadWebSub => 'Coming Soon';
+  String get downloadWebSub => 'Web';
 
   @override
   String get ctaHeadline1 => 'Your next project';
@@ -382,7 +382,7 @@ class SSStringsKo extends SSStrings {
   @override
   String get downloadWeb => '웹 앱';
   @override
-  String get downloadWebSub => '출시 예정';
+  String get downloadWebSub => 'Web';
 
   @override
   String get ctaHeadline1 => '다음 프로젝트에도';
