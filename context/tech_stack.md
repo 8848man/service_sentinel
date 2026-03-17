@@ -10,7 +10,7 @@ See `requirements.txt` for full dependency list.
 - **Validation**: Pydantic 2.6.1
 - **HTTP client**: HTTPX 0.27.0 (with HTTP/2)
 - **Scheduling**: APScheduler 3.10.4
-- **Auth**: python-jose (JWT), passlib (bcrypt), firebase-admin
+- **Auth**: firebase-admin (v3 active auth). `python-jose` (JWT) and `passlib` (bcrypt) remain in `requirements.txt` but are only referenced in the legacy `core/auth.py` file and are unused in all v3 code.
 - **Testing**: pytest, pytest-asyncio
 
 ## Frontend (Flutter)
@@ -20,9 +20,12 @@ See `pubspec.yaml` for full dependency list.
 - **State management**: Riverpod 2.5.1 (with code generation)
 - **Routing**: go_router 14.2.0
 - **Network**: Dio 5.4.3
-- **Local storage**: shared_preferences, flutter_secure_storage, Hive
+- **Local storage**: shared_preferences, flutter_secure_storage, Hive, hive_flutter
 - **Code generation**: build_runner, freezed, json_serializable
 - **i18n**: flutter_localizations + intl
+- **Auth**: google_sign_in
+- **UI**: google_fonts, flutter_svg
+- **Utilities**: equatable, logger
 
 ## Infrastructure
 - **Database**: PostgreSQL
@@ -31,4 +34,5 @@ See `pubspec.yaml` for full dependency list.
 ## External Services
 - **Auth**: Firebase Auth + Google Sign-In
 - **Push notifications**: FCM (firebase_messaging / firebase-admin)
-- **AI**: Google Gemini (google-generativeai 0.3.2)
+- **Notification channels**: FCM (push), Email, Slack, Webhook — all implemented under `services/notification/channels/`
+- **AI**: Google Gemini (google-generativeai 0.3.2). Note: `config.py` retains stale OpenAI defaults (`AI_MODEL: "gpt-4-turbo"`, `AI_API_URL: "https://api.openai.com/v1/chat/completions"`) from a previous implementation. The active `AIAnalysisService` uses the Gemini SDK and ignores `AI_API_URL` entirely — that field is dead config. `AI_MODEL` must be overridden via environment variable to a valid Gemini model name.
