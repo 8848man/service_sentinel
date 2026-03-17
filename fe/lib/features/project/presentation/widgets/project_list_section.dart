@@ -13,6 +13,8 @@ import '../../domain/entities/api_key.dart';
 import '../../domain/entities/project.dart';
 import 'project_create_dialog.dart';
 
+enum _ProjectCardAction { edit, delete }
+
 /// Project list section - Displays all projects and allows creation
 /// Consumes: projectsProvider, authStateNotifierProvider
 ///
@@ -187,7 +189,41 @@ class ProjectListSection extends ConsumerWidget {
                 ),
               ),
             const SizedBox(width: 8),
-            const Icon(Icons.arrow_forward_ios, size: 16),
+            PopupMenuButton<_ProjectCardAction>(
+              icon: const Icon(Icons.more_vert, size: 20),
+              onSelected: (action) {
+                if (action == _ProjectCardAction.edit) {
+                  context.push('/project/${project.id}/edit');
+                } else if (action == _ProjectCardAction.delete) {
+                  _showDeleteConfirmation(context, ref, project);
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: _ProjectCardAction.edit,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.edit, size: 18),
+                      const SizedBox(width: 8),
+                      Text(l10n.common_edit),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: _ProjectCardAction.delete,
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete, size: 18, color: theme.colorScheme.error),
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.common_delete,
+                        style: TextStyle(color: theme.colorScheme.error),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         onTap: () => _handleProjectSelection(context, ref, project),
@@ -354,6 +390,65 @@ class ProjectListSection extends ConsumerWidget {
               context.go(AppRoutes.settings);
             },
           ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _showDeleteConfirmation(
+    BuildContext context,
+    WidgetRef ref,
+    Project project,
+  ) async {
+    final l10n = context.l10n;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.projects_delete_project),
+        content: Text(l10n.projects_delete_confirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.common_cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.common_delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    final useCase = ref.read(deleteProjectProvider);
+    final result = await useCase.execute(project.id.toString());
+
+    if (!context.mounted) return;
+    Navigator.of(context).pop();
+
+    if (result.isSuccess) {
+      ref.invalidate(projectsProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.projects_project_deleted)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.projects_failed_to_delete(
+              result.errorOrNull?.message ?? '')),
+          backgroundColor: Colors.red,
         ),
       );
     }

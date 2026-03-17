@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:service_sentinel_fe_v2/features/api_monitoring/presentation/widgets/create_service_set_dialog.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../providers/service_provider.dart';
 import '../../domain/entities/service.dart';
 import 'create_service_dialog.dart';
+
+enum _ServiceCardAction { edit, delete }
 
 /// Services list section - Displays all services for current project
 /// Consumes: servicesProvider
@@ -71,7 +74,8 @@ class ServicesListSection extends ConsumerWidget {
 
             return Column(
               children: services
-                  .map((service) => _buildServiceCard(context, service, theme))
+                  .map((service) =>
+                      _buildServiceCard(context, ref, service, theme))
                   .toList(),
             );
           },
@@ -167,14 +171,17 @@ class ServicesListSection extends ConsumerWidget {
 
   Widget _buildServiceCard(
     BuildContext context,
+    WidgetRef ref,
     Service service,
     ThemeData theme,
   ) {
+    final l10n = context.l10n;
     return Card(
-      // color: _getServiceCardColor(
-      //     service.serviceState ?? ServiceState.healthy, theme),
       margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => context.push('/service/${service.id}'),
+        child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,6 +220,43 @@ class ServicesListSection extends ConsumerWidget {
                 const SizedBox(width: 8),
                 // Active/Inactive badge
                 _buildStatusBadge(service.isActive, theme, context),
+                PopupMenuButton<_ServiceCardAction>(
+                  icon: const Icon(Icons.more_vert, size: 20),
+                  onSelected: (action) {
+                    if (action == _ServiceCardAction.edit) {
+                      context.push('/service/${service.id}/edit');
+                    } else if (action == _ServiceCardAction.delete) {
+                      _showDeleteConfirmation(context, ref, service);
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: _ServiceCardAction.edit,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.edit, size: 18),
+                          const SizedBox(width: 8),
+                          Text(l10n.common_edit),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: _ServiceCardAction.delete,
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete,
+                              size: 18, color: theme.colorScheme.error),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.common_delete,
+                            style:
+                                TextStyle(color: theme.colorScheme.error),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -290,8 +334,68 @@ class ServicesListSection extends ConsumerWidget {
             ],
           ],
         ),
+        ),
       ),
     );
+  }
+
+  Future<void> _showDeleteConfirmation(
+    BuildContext context,
+    WidgetRef ref,
+    Service service,
+  ) async {
+    final l10n = context.l10n;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.services_delete_service),
+        content: Text(l10n.services_delete_confirmation_message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.common_cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.common_delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    final useCase = ref.read(deleteServiceProvider);
+    final result = await useCase.execute(service.id);
+
+    if (!context.mounted) return;
+    Navigator.of(context).pop();
+
+    if (result.isSuccess) {
+      ref.invalidate(servicesProvider);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.services_service_deleted)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.services_failed_to_delete(
+              result.errorOrNull?.message ?? '')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Widget _buildServiceTypeIcon(ServiceType type, ThemeData theme) {

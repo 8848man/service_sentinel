@@ -41,12 +41,9 @@ class ServiceDetailScreen extends ConsumerWidget {
           ),
           IconButton(
             icon: const Icon(Icons.edit),
-            tooltip: l10n.services_edit_coming_soon,
+            tooltip: l10n.common_edit,
             onPressed: () {
-              // TODO: Navigate to service edit screen
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.services_edit_coming_soon)),
-              );
+              context.push('/service/$serviceId/edit');
             },
           ),
           PopupMenuButton<String>(

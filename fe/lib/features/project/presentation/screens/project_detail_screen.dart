@@ -30,10 +30,7 @@ class ProjectDetailScreen extends ConsumerWidget {
             icon: const Icon(Icons.edit),
             tooltip: 'Edit Project',
             onPressed: () {
-              // TODO: Navigate to project edit screen
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Edit feature coming soon')),
-              );
+              context.push('/project/$projectId/edit');
             },
           ),
           IconButton(
