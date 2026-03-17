@@ -6,40 +6,46 @@
 
 ```
 lib/
-├── app/
+├── app.dart        ← single file: ServiceSentinelApp (MaterialApp.router)
 ├── core/
 └── features/
 ```
 
-**app/** — AppRoot, MaterialApp configuration, scaffold, adaptor, wrapper. Does not contain business logic. Router is located in `core/router/`.
+**app.dart** — AppRoot and MaterialApp configuration in a single file. Does not contain business logic. Router is located in `core/router/`.
 
-**core/** — Global non-UI logic. Manages session, cache, auth state, and shared data that must persist across features. Each sub-feature follows the layer structure below. `application/` is the primary layer; `presentation/` is only added when shared widgets exist.
+**core/** — Global non-UI logic. Manages session, cache, auth state, and shared data that must persist across features. Sub-directories vary in layering depth:
+
+- `core/auth/` — full layers: `domain/` (entities/, repositories/, usecases/), `data/` (dto/, repositories/), `di/`, `application/` (providers/, utils/)
+- `core/settings/` — partial layers: `domain/`, `application/`, `infrastructure/`, `presentation/` (screens/, view_models/, widgets/)
+- All other core sub-directories are flat (no sub-layers):
 
 ```
 core/
-└── {feature}/
-    ├── domain/
-    ├── data/
-    ├── di/
-    ├── application/
-    └── presentation/  ← shared widgets only, optional
+├── config/         ← app configuration constants
+├── constants/      ← enums, spacing
+├── data/           ← data source mode helpers
+├── di/             ← root-level Riverpod provider overrides
+├── error/          ← AppError types, Result<T>, error handler
+├── extensions/     ← BuildContext extensions
+├── infrastructure/ ← GuestApiKeyService
+├── l10n/           ← locale provider
+├── migration/      ← migration state and service
+├── navigation/     ← MainScaffold
+├── network/        ← DioClient, AuthenticationInterceptor
+├── router/         ← GoRouter configuration
+├── services/       ← DeviceRegistrationService
+├── state/          ← ProjectSession, ProjectSessionNotifier
+├── storage/        ← SecureStorage wrapper
+└── theme/          ← AppTheme, AppColors, ThemeProvider
 ```
 
-**features/** — Screen-level features. Each feature is self-contained.
+**features/** — Screen-level features. Standard structure (exemplified by `api_monitoring/`): `domain/`, `data/`, `di/`, `presentation/` (screens/, widgets/, states/, providers/, view_models/).
 
-```
-features/
-└── {feature}/
-    ├── domain/
-    ├── data/
-    ├── di/             ← repository + usecase DI bindings
-    └── presentation/
-        ├── screens/
-        ├── widgets/
-        ├── states/     ← freezed state models
-        ├── providers/  ← FutureProvider / StreamProvider (data fetch, read-only)
-        └── view_models/ ← Notifier (user interaction, state mutation)
-```
+Exceptions:
+- `analysis/` — presentation only (screens/, widgets/); no domain/data/di
+- `auth/` — presentation only (screens/, widgets/); domain/data/di live in `core/auth/`
+- `dashboard/` — adds `application/use_cases/`; presentation omits widgets/ and states/
+- `incident/`, `project/` — add `application/use_cases/`; presentation omits states/ and view_models/
 
 Features may contain nested features under `features/{feature}/features/` when a feature has distinct sub-screens.
 
@@ -48,7 +54,7 @@ Features may contain nested features under `features/{feature}/features/` when a
 - **domain/** — entities, repository interfaces, usecases. No Flutter/external dependencies.
 - **data/** — repository implementations, DTOs, API calls.
 - **di/** — DI bindings only. Wires repository implementations to domain interfaces and provides usecases.
-- **application/** (core only) — session/cache state management via Riverpod providers.
+- **application/** (core and some features) — session/cache state management via Riverpod providers.
 - **presentation/states/** — freezed classes only. Pure data, no logic.
 - **presentation/providers/** — FutureProvider or StreamProvider for data fetching. UI watches these directly. No state mutation.
 - **presentation/view_models/** — Notifier classes. Handles user interactions and state changes. Uses `@riverpod` annotation; generated `.g.dart` files live alongside.
@@ -59,7 +65,7 @@ Features may contain nested features under `features/{feature}/features/` when a
 - Classes: `PascalCase`
 - Providers: `{name}Provider` (generated), Notifiers: `{Name}ViewModel`
 - State models: `{Name}State`
-- Each layer exposes a `public.dart` barrel file for external imports
+- Each layer should expose a `public.dart` barrel file for external imports. Currently only `core/auth/` sub-layers implement this consistently; treat it as a convention goal, not the current state of all layers.
 
 ---
 
@@ -70,15 +76,24 @@ Features may contain nested features under `features/{feature}/features/` when a
 ```
 app/
 ├── api/
-│   └── v3/             ← all active routers (v1/v2 removed)
-├── core/               ← config, database, auth, firebase
-├── models/             ← SQLAlchemy ORM models
-├── repositories/       ← database access layer
-├── schemas/            ← Pydantic request/response schemas
+│   └── v3/                     ← all active routers (v1/v2 removed)
+├── core/                       ← config, database, auth, firebase
+│                                  Note: core/auth.py is a legacy v1/v2 leftover
+│                                  (JWT-based using python-jose/passlib). It is not
+│                                  imported by any v3 code and can be removed.
+├── models/                     ← SQLAlchemy ORM models
+├── repositories/               ← database access layer
+├── schemas/                    ← Pydantic request/response schemas
 └── services/
-    ├── monitoring/     ← monitoring worker + scheduler
-    ├── notification/   ← notification policy + dispatch
-    └── ai/             ← AI analysis
+    ├── monitoring/              ← monitoring worker + scheduler
+    │                              Note: monitoring/usecase.py is an empty dead file.
+    ├── notification/            ← notification policy evaluation and dispatch
+    │   ├── channels/            ← FCM, Email, Slack, Webhook channel implementations
+    │   ├── policies/            ← per-resource notification policies
+    │   ├── rules/               ← rule parser and evaluator
+    │   ├── senders/             ← sender abstractions (Firebase, log)
+    │   └── templates/           ← message templates
+    └── ai_analysis_service.py  ← AI analysis (flat file, no subdirectory)
 ```
 
 ### Layer Rules

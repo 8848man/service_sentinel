@@ -51,7 +51,7 @@ Responsibilities:
 - performs service health checks
 - evaluates service responses
 - produces monitoring results
-- detects incidents
+- delegates incident detection to `IncidentService` — the worker calls `incident_service.handle_failure()` on failure and `incident_service.resolve_if_healthy()` on success; it does not perform detection itself
 
 
 ## Notification System
@@ -98,7 +98,7 @@ Monitoring Scheduler -> Background Worker
 
 Background Worker -> Database
 
-Background Worker -> Notification System
+Background Worker -> IncidentService (passes a NotifyIncidentUseCase instance; IncidentService executes the notification internally on new incident creation — the worker does not call the Notification System directly)
 
 Client -> API Server (AI analysis request)
 
@@ -120,9 +120,9 @@ Monitoring Worker
     ↓
 Health Evaluation
     ↓
-Incident Detection
+Incident Detection (via IncidentService)
     ↓
-Notification
+Notification (on new incident creation only — notification on resolution is not currently implemented; the corresponding code in resolve_if_healthy is commented out)
 
 Monitoring policies such as thresholds, retry logic, and incident resolution rules
 are defined in feature specifications.
