@@ -5,6 +5,7 @@ import 'package:service_sentinel_fe_v2/core/di/providers.dart';
 import 'package:service_sentinel_fe_v2/core/state/project_session_notifier.dart';
 import '../../features/analysis/presentation/screens/analysis_overview_screen.dart';
 import '../../features/api_monitoring/presentation/screens/service_detail_screen.dart';
+import '../../features/api_monitoring/presentation/screens/service_edit_screen.dart';
 import '../../features/api_monitoring/presentation/screens/services_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
@@ -13,6 +14,7 @@ import '../../features/incident/presentation/screens/ai_analysis_screen.dart';
 import '../../features/incident/presentation/screens/incident_detail_screen.dart';
 import '../../features/incident/presentation/screens/incidents_screen.dart';
 import '../../features/project/presentation/screens/project_detail_screen.dart';
+import '../../features/project/presentation/screens/project_edit_screen.dart';
 import '../../features/project/presentation/screens/project_selection_screen.dart';
 import '../settings/presentation/screens/settings_screen.dart';
 import '../navigation/main_scaffold.dart';
@@ -25,10 +27,12 @@ class AppRoutes {
   static const String login = '/login';
   static const String projectSelection = '/project-selection';
   static const String projectDetail = '/project/:id';
+  static const String projectEdit = '/project/:id/edit';
   static const String main = '/main';
   static const String dashboard = '/main/dashboard';
   static const String services = '/main/services';
   static const String serviceDetail = '/service/:id';
+  static const String serviceEdit = '/service/:id/edit';
   static const String incidents = '/main/incidents';
   static const String incidentDetail = '/incident/:id';
   // static const String aiAnalysis = '/incident/:id/analysis';
@@ -88,12 +92,30 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // Project Edit
+      GoRoute(
+        path: AppRoutes.projectEdit,
+        builder: (context, state) {
+          final projectId = state.pathParameters['id']!;
+          return ProjectEditScreen(projectId: projectId);
+        },
+      ),
+
       // Service Detail
       GoRoute(
         path: AppRoutes.serviceDetail,
         builder: (context, state) {
           final serviceId = state.pathParameters['id']!;
           return ServiceDetailScreen(serviceId: serviceId);
+        },
+      ),
+
+      // Service Edit
+      GoRoute(
+        path: AppRoutes.serviceEdit,
+        builder: (context, state) {
+          final serviceId = state.pathParameters['id']!;
+          return ServiceEditScreen(serviceId: serviceId);
         },
       ),
 
