@@ -65,7 +65,7 @@ class MainAppBar extends ConsumerWidget implements PreferredSizeWidget {
   }
 
   AppThemeMode _nextThemeMode(AppThemeMode current) {
-    final values = AppThemeMode.values;
+    const values = AppThemeMode.values;
     return values[(values.indexOf(current) + 1) % values.length];
   }
 }
