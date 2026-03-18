@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:service_sentinel_fe_v2/core/extensions/context_extensions.dart';
 import '../router/app_router.dart';
+import 'main_app_bar.dart';
 
 /// Main scaffold with bottom navigation
 class MainScaffold extends StatelessWidget {
@@ -18,6 +19,7 @@ class MainScaffold extends StatelessWidget {
     final currentPath = GoRouterState.of(context).uri.path;
 
     return Scaffold(
+      appBar: MainAppBar(title: _titleForPath(currentPath, l10n)),
       body: child,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _calculateSelectedIndex(currentPath),
@@ -46,6 +48,14 @@ class MainScaffold extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _titleForPath(String path, dynamic l10n) {
+    if (path.startsWith(AppRoutes.services)) return l10n.navigation_services;
+    if (path.startsWith(AppRoutes.incidents)) return l10n.navigation_incidents;
+    if (path.startsWith(AppRoutes.analysis)) return l10n.analysis_title;
+    if (path.startsWith(AppRoutes.settings)) return l10n.navigation_settings;
+    return l10n.navigation_dashboard;
   }
 
   int _calculateSelectedIndex(String path) {
