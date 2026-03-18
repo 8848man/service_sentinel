@@ -6,6 +6,8 @@ from app.models.incident import Incident, IncidentStatus, IncidentSeverity
 from app.models.ai_analysis import AIAnalysis
 from app.models.user import User
 from app.models.device_token import UserDeviceToken
+from app.models.subscription import Subscription, SubscriptionPlan, SubscriptionStatus
+from app.models.subscription_history import SubscriptionHistory, ChangeReason
 
 __all__ = [
     "Project",
@@ -21,4 +23,9 @@ __all__ = [
     "AIAnalysis",
     "User",
     "UserDeviceToken",
+    "Subscription",
+    "SubscriptionPlan",
+    "SubscriptionStatus",
+    "SubscriptionHistory",
+    "ChangeReason",
 ]

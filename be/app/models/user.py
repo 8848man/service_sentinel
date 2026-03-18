@@ -29,3 +29,11 @@ class User(Base):
         cascade="all, delete-orphan",
         lazy="noload",
     )
+
+    subscription = relationship(
+        "Subscription",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
+        lazy="noload",
+    )
