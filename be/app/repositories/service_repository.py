@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 
 from app.models.service import Service, ServiceType, ServiceState
+from app.models.project import Project
 
 
 class ServiceRepository:
@@ -47,8 +48,15 @@ class ServiceRepository:
         return query.offset(skip).limit(limit).all()
 
     def find_active_for_monitoring(self) -> list[Service]:
-        """Get all services that should be monitored"""
-        return self.db.query(Service).filter(Service.is_active == True).all()
+        """Get all services that should be monitored.
+        A service is eligible only when both Service.is_active and Project.is_active are True.
+        """
+        return (
+            self.db.query(Service)
+            .join(Project, Service.project_id == Project.id)
+            .filter(Service.is_active == True, Project.is_active == True)
+            .all()
+        )
 
     def update_state(self, service_id: int, new_state: ServiceState) -> Optional[Service]:
         """

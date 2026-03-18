@@ -325,6 +325,48 @@ async def delete_project(
         raise HTTPException(status_code=404, detail="Project not found")
 
 
+# ===== Project Monitoring Toggle =====
+
+@router.patch("/{project_id}/activate", response_model=ProjectResponse)
+async def activate_project(
+    project_id: int,
+    auth_context: AuthContext = Depends(get_auth_context),
+    db: Session = Depends(get_db),
+):
+    """Activate monitoring for a project (requires ownership)."""
+    await verify_project_ownership(auth_context, db)
+
+    repo = ProjectRepository(db)
+    project = repo.find_by_id(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    project.is_active = True
+    db.commit()
+    db.refresh(project)
+    return project
+
+
+@router.patch("/{project_id}/deactivate", response_model=ProjectResponse)
+async def deactivate_project(
+    project_id: int,
+    auth_context: AuthContext = Depends(get_auth_context),
+    db: Session = Depends(get_db),
+):
+    """Deactivate monitoring for a project (requires ownership)."""
+    await verify_project_ownership(auth_context, db)
+
+    repo = ProjectRepository(db)
+    project = repo.find_by_id(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    project.is_active = False
+    db.commit()
+    db.refresh(project)
+    return project
+
+
 # ===== API Key Management =====
 
 @router.post("/{project_id}/api-keys", response_model=APIKeyWithSecret, status_code=status.HTTP_201_CREATED)
