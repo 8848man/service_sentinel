@@ -18,6 +18,7 @@ import '../../features/project/presentation/screens/project_edit_screen.dart';
 import '../../features/project/presentation/screens/project_selection_screen.dart';
 import '../settings/presentation/screens/settings_screen.dart';
 import '../navigation/main_scaffold.dart';
+import '../../features/subscription/presentation/screens/upgrade_screen.dart';
 
 /// Route names
 class AppRoutes {
@@ -38,6 +39,7 @@ class AppRoutes {
   // static const String aiAnalysis = '/incident/:id/analysis';
   static const String analysis = '/main/analysis';
   static const String settings = '/main/settings';
+  static const String upgrade = '/upgrade';
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -126,6 +128,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           final incidentId = state.pathParameters['id']!;
           return IncidentDetailScreen(incidentId: incidentId);
         },
+      ),
+
+      // Upgrade Screen
+      GoRoute(
+        path: AppRoutes.upgrade,
+        builder: (context, state) => const UpgradeScreen(),
       ),
 
       // AI Analysis Detail

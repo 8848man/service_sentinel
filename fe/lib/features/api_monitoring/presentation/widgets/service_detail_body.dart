@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:service_sentinel_fe_v2/core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
+import '../../domain/entities/service.dart';
 import '../providers/service_provider.dart';
 
 /// Service Detail Body Widget

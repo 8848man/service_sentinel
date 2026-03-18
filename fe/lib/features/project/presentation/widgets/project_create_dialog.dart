@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/presentation/view_models/subscription_view_model.dart';
 import '../../../../core/di/providers.dart';
 import '../../../../core/error/app_error.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/auth/application/providers/auth_provider.dart';
+import '../../../subscription/presentation/widgets/plan_limit_dialog.dart';
+import '../../../subscription/di/repository_providers.dart';
 import '../../presentation/providers/bootstrap_provider.dart';
 import '../../presentation/providers/project_provider.dart';
 import '../../domain/entities/bootstrap.dart';
@@ -125,6 +128,19 @@ class _ProjectCreateDialogState extends ConsumerState<ProjectCreateDialog> {
       if (error is GuestProjectLimitError) {
         if (!mounted) return null;
         await _showGuestLimitDialog();
+        return null;
+      }
+
+      // Handle plan limit reached (403 from BE)
+      if (error is ServerError && error.statusCode == 403) {
+        if (!mounted) return null;
+        final subState = ref.read(subscriptionViewModelProvider);
+        await PlanLimitDialog.show(
+          context,
+          plan: subState.currentPlan,
+          limit: subState.maxProjects,
+          resource: 'projects',
+        );
         return null;
       }
 

@@ -92,8 +92,35 @@ async def create_project(
     v3 REQUIRES Firebase authentication.
     The project will be owned by the authenticated user.
     """
-    # Create project with user ownership
+    from app.repositories.subscription_repository import SubscriptionRepository
+    from app.core.plan_limits import get_limits, FALLBACK_PLAN
+    from app.models.subscription import SubscriptionStatus
+
+    # Determine effective plan
+    sub_repo = SubscriptionRepository(db)
+    sub = sub_repo.get_by_user_id(user.id)
+    if sub and sub.status == SubscriptionStatus.ACTIVE:
+        plan = sub.plan.value
+    else:
+        plan = FALLBACK_PLAN
+
+    limits = get_limits(plan)
+
+    # Check project count
     repo = ProjectRepository(db)
+    current_count = len(repo.find_by_user_id(user_id=user.id, limit=1000))
+    if current_count >= limits["max_projects"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "plan_limit_reached",
+                "resource": "project",
+                "current_plan": plan,
+                "limit": limits["max_projects"],
+                "upgrade_required": True,
+            }
+        )
+
     project = repo.create(
         name=request.name,
         description=request.description,
@@ -296,6 +323,48 @@ async def delete_project(
 
     if not success:
         raise HTTPException(status_code=404, detail="Project not found")
+
+
+# ===== Project Monitoring Toggle =====
+
+@router.patch("/{project_id}/activate", response_model=ProjectResponse)
+async def activate_project(
+    project_id: int,
+    auth_context: AuthContext = Depends(get_auth_context),
+    db: Session = Depends(get_db),
+):
+    """Activate monitoring for a project (requires ownership)."""
+    await verify_project_ownership(auth_context, db)
+
+    repo = ProjectRepository(db)
+    project = repo.find_by_id(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    project.is_active = True
+    db.commit()
+    db.refresh(project)
+    return project
+
+
+@router.patch("/{project_id}/deactivate", response_model=ProjectResponse)
+async def deactivate_project(
+    project_id: int,
+    auth_context: AuthContext = Depends(get_auth_context),
+    db: Session = Depends(get_db),
+):
+    """Deactivate monitoring for a project (requires ownership)."""
+    await verify_project_ownership(auth_context, db)
+
+    repo = ProjectRepository(db)
+    project = repo.find_by_id(project_id)
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    project.is_active = False
+    db.commit()
+    db.refresh(project)
+    return project
 
 
 # ===== API Key Management =====

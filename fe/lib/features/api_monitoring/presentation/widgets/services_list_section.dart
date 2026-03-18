@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:service_sentinel_fe_v2/features/api_monitoring/presentation/widgets/create_service_set_dialog.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/di/repository_providers.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/presentation/view_models/subscription_view_model.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/presentation/widgets/plan_limit_dialog.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../providers/service_provider.dart';
@@ -182,158 +185,161 @@ class ServicesListSection extends ConsumerWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: () => context.push('/service/${service.id}'),
         child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                // Service type icon
-                _buildServiceTypeIcon(service.serviceType, theme),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        service.name,
-                        style: theme.textTheme.titleMedium,
-                      ),
-                      if (service.description != null) ...[
-                        const SizedBox(height: 4),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  // Service type icon
+                  _buildServiceTypeIcon(service.serviceType, theme),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          service.description!,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.7),
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          service.name,
+                          style: theme.textTheme.titleMedium,
                         ),
+                        if (service.description != null) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            service.description!,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color:
+                                  theme.colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  if (service.isActive)
+                    _buildHealthStatus(
+                        service.serviceState ?? ServiceState.healthy,
+                        theme,
+                        context),
+                  const SizedBox(width: 8),
+                  // Active/Inactive badge
+                  _buildStatusBadge(service.isActive, theme, context),
+                  PopupMenuButton<_ServiceCardAction>(
+                    icon: const Icon(Icons.more_vert, size: 20),
+                    onSelected: (action) {
+                      if (action == _ServiceCardAction.edit) {
+                        context.push('/service/${service.id}/edit');
+                      } else if (action == _ServiceCardAction.delete) {
+                        _showDeleteConfirmation(context, ref, service);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: _ServiceCardAction.edit,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.edit, size: 18),
+                            const SizedBox(width: 8),
+                            Text(l10n.common_edit),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: _ServiceCardAction.delete,
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete,
+                                size: 18, color: theme.colorScheme.error),
+                            const SizedBox(width: 8),
+                            Text(
+                              l10n.common_delete,
+                              style: TextStyle(color: theme.colorScheme.error),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                const SizedBox(width: 8),
-
-                _buildHealthStatus(service.serviceState ?? ServiceState.healthy,
-                    theme, context),
-                const SizedBox(width: 8),
-                // Active/Inactive badge
-                _buildStatusBadge(service.isActive, theme, context),
-                PopupMenuButton<_ServiceCardAction>(
-                  icon: const Icon(Icons.more_vert, size: 20),
-                  onSelected: (action) {
-                    if (action == _ServiceCardAction.edit) {
-                      context.push('/service/${service.id}/edit');
-                    } else if (action == _ServiceCardAction.delete) {
-                      _showDeleteConfirmation(context, ref, service);
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: _ServiceCardAction.edit,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.edit, size: 18),
-                          const SizedBox(width: 8),
-                          Text(l10n.common_edit),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: _ServiceCardAction.delete,
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete,
-                              size: 18, color: theme.colorScheme.error),
-                          const SizedBox(width: 8),
-                          Text(
-                            l10n.common_delete,
-                            style:
-                                TextStyle(color: theme.colorScheme.error),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Divider(height: 1, color: theme.dividerColor),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                // HTTP Method
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _getHttpMethodColor(service.httpMethod, theme),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    service.httpMethod.displayName(context),
-                    style: theme.textTheme.labelSmall?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // Endpoint URL
-                Expanded(
-                  child: Text(
-                    service.endpointUrl,
-                    style: theme.textTheme.bodySmall,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            // Additional info
-            Row(
-              children: [
-                Icon(Icons.timer,
-                    size: 14,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6)),
-                const SizedBox(width: 4),
-                Text(
-                  context.l10n
-                      .services_check_interval(service.checkIntervalSeconds),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Icon(Icons.warning,
-                    size: 14,
-                    color: theme.colorScheme.onSurface.withOpacity(0.6)),
-                const SizedBox(width: 4),
-                Text(
-                  context.l10n.services_failure_threshold_value(
-                      service.failureThreshold),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                ),
-              ],
-            ),
-            if (service.lastCheckedAt != null) ...[
-              const SizedBox(height: 8),
-              Text(
-                context.l10n.services_last_checked(
-                    _formatDateTime(context, service.lastCheckedAt!)),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  fontStyle: FontStyle.italic,
-                ),
+                ],
               ),
+              const SizedBox(height: 12),
+              Divider(height: 1, color: theme.dividerColor),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  // HTTP Method
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: _getHttpMethodColor(service.httpMethod, theme),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      service.httpMethod.displayName(context),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // Endpoint URL
+                  Expanded(
+                    child: Text(
+                      service.endpointUrl,
+                      style: theme.textTheme.bodySmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // Additional info
+              Row(
+                children: [
+                  Icon(Icons.timer,
+                      size: 14,
+                      color: theme.colorScheme.onSurface.withOpacity(0.6)),
+                  const SizedBox(width: 4),
+                  Text(
+                    context.l10n
+                        .services_check_interval(service.checkIntervalSeconds),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Icon(Icons.warning,
+                      size: 14,
+                      color: theme.colorScheme.onSurface.withOpacity(0.6)),
+                  const SizedBox(width: 4),
+                  Text(
+                    context.l10n.services_failure_threshold_value(
+                        service.failureThreshold),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+              if (service.lastCheckedAt != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  context.l10n.services_last_checked(
+                      _formatDateTime(context, service.lastCheckedAt!)),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
             ],
-          ],
-        ),
+          ),
         ),
       ),
     );
@@ -390,8 +396,8 @@ class ServicesListSection extends ConsumerWidget {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(l10n.services_failed_to_delete(
-              result.errorOrNull?.message ?? '')),
+          content: Text(l10n
+              .services_failed_to_delete(result.errorOrNull?.message ?? '')),
           backgroundColor: Colors.red,
         ),
       );
@@ -553,6 +559,22 @@ class ServicesListSection extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) async {
+    // Check plan limit before opening the dialog
+    final subState = ref.read(subscriptionViewModelProvider);
+    final servicesAsync = ref.read(servicesProvider);
+    final currentCount = servicesAsync.valueOrNull?.length ?? 0;
+    if (currentCount >= subState.maxServices) {
+      if (context.mounted) {
+        await PlanLimitDialog.show(
+          context,
+          plan: subState.currentPlan,
+          limit: subState.maxServices,
+          resource: 'services',
+        );
+      }
+      return;
+    }
+
     final result = await showDialog<Service>(
       context: context,
       builder: (context) => const CreateServiceDialog(),

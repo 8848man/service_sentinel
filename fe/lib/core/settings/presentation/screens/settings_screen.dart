@@ -10,6 +10,7 @@ import '../../../theme/app_theme_mode.dart';
 import '../../../theme/theme_provider.dart';
 import '../../../auth/application/providers/auth_provider.dart';
 import '../widgets/api_key_settings_section.dart';
+import '../../../../features/subscription/presentation/widgets/subscription_settings_section.dart';
 
 /// Settings screen - App settings and preferences
 /// Layout only. Provider consumption happens in section widgets.
@@ -38,6 +39,11 @@ class SettingsScreen extends StatelessWidget {
 
               // Project section (show current project and change button)
               _ProjectSection(),
+
+              SizedBox(height: 24),
+
+              // Subscription plan section
+              SubscriptionSettingsSection(),
 
               SizedBox(height: 24),
 

@@ -1,0 +1,2 @@
+# on powershell, delete all local branch except 'develop'
+git branch | Where-Object {$_ -notmatch "develop" -and $_ -notmatch "\*"} | ForEach-Object { git branch -D $_.Trim() }

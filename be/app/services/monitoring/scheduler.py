@@ -30,6 +30,17 @@ async def start_scheduler():
         max_instances=1  # Prevent overlapping runs
     )
 
+    # Run inactivity checks once per day
+    from app.services.inactivity_service import run_inactivity_checks
+    scheduler.add_job(
+        run_inactivity_checks,
+        trigger=IntervalTrigger(hours=24),
+        id="inactivity_checks",
+        name="Check free-plan user inactivity",
+        replace_existing=True,
+        max_instances=1,
+    )
+
     scheduler.start()
     logger.info(
         f"Monitoring scheduler started - checking every {settings.MONITORING_INTERVAL_SECONDS}s"

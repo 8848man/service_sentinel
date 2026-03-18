@@ -29,6 +29,7 @@ class _ProjectEditScreenState extends ConsumerState<ProjectEditScreen> {
 
   bool _isLoading = false;
   bool _isInitialized = false;
+  bool _isActive = true;
   String? _errorMessage;
 
   @override
@@ -42,6 +43,7 @@ class _ProjectEditScreenState extends ConsumerState<ProjectEditScreen> {
     if (_isInitialized) return;
     _nameController.text = project.name;
     _descriptionController.text = project.description ?? '';
+    _isActive = project.isActive;
     _isInitialized = true;
   }
 
@@ -58,6 +60,7 @@ class _ProjectEditScreenState extends ConsumerState<ProjectEditScreen> {
       description: _descriptionController.text.trim().isEmpty
           ? null
           : _descriptionController.text.trim(),
+      isActive: _isActive,
     );
 
     final useCase = ref.read(updateProjectProvider);
@@ -144,6 +147,16 @@ class _ProjectEditScreenState extends ConsumerState<ProjectEditScreen> {
                     ),
                     maxLines: 3,
                     enabled: !_isLoading,
+                  ),
+                  const SizedBox(height: 8),
+                  SwitchListTile(
+                    value: _isActive,
+                    onChanged: _isLoading
+                        ? null
+                        : (val) => setState(() => _isActive = val),
+                    title: const Text('Monitoring'),
+                    secondary: const Icon(Icons.monitor_heart_outlined),
+                    contentPadding: EdgeInsets.zero,
                   ),
                   if (_errorMessage != null) ...[
                     const SizedBox(height: 16),
