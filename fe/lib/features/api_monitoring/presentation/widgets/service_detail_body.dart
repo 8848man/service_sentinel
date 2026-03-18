@@ -113,19 +113,6 @@ class ServiceDetailBody extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
-                    // Monitoring toggle
-                    Row(
-                      children: [
-                        const Icon(Icons.monitor_heart_outlined, size: 18),
-                        const SizedBox(width: 8),
-                        const Expanded(child: Text('Monitoring')),
-                        Switch(
-                          value: service.isActive,
-                          onChanged: (val) => _toggleServiceMonitoring(context, ref, service, val),
-                        ),
-                      ],
-                    ),
                     const SizedBox(height: 16),
                     const Divider(),
                     const SizedBox(height: 12),
@@ -365,32 +352,5 @@ class ServiceDetailBody extends ConsumerWidget {
   String _formatDateTime(DateTime dateTime) {
     return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} '
         '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
-  }
-
-  Future<void> _toggleServiceMonitoring(
-    BuildContext context,
-    WidgetRef ref,
-    Service service,
-    bool newValue,
-  ) async {
-    final updateUseCase = ref.read(updateServiceProvider);
-    final result = await updateUseCase.execute(
-      service.id,
-      ServiceUpdate(isActive: newValue),
-    );
-    if (context.mounted) {
-      if (result.isSuccess) {
-        ref.invalidate(serviceByIdProvider(service.id));
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Monitoring will update on the next check cycle.'),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result.errorOrNull?.message ?? 'Failed to toggle monitoring')),
-        );
-      }
-    }
   }
 }

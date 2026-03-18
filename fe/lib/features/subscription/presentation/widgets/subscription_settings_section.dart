@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/presentation/view_models/subscription_view_model.dart';
 import '../../../../core/router/app_router.dart';
 import '../../di/repository_providers.dart';
 
@@ -53,7 +54,8 @@ class SubscriptionSettingsSection extends ConsumerWidget {
               ListTile(
                 leading: const Icon(Icons.event),
                 title: const Text('Expires'),
-                subtitle: Text(sub!.expiresAt!.toLocal().toString().split(' ').first),
+                subtitle:
+                    Text(sub!.expiresAt!.toLocal().toString().split(' ').first),
               ),
             ],
 

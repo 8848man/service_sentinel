@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:service_sentinel_fe_v2/core/constants/enums.dart';
 import 'package:service_sentinel_fe_v2/features/subscription/di/repository_providers.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/presentation/view_models/subscription_view_model.dart';
 import 'package:service_sentinel_fe_v2/features/subscription/presentation/widgets/plan_limit_dialog.dart';
 import '../../di/repository_providers.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -215,7 +216,8 @@ class ProjectListSection extends ConsumerWidget {
                   value: _ProjectCardAction.delete,
                   child: Row(
                     children: [
-                      Icon(Icons.delete, size: 18, color: theme.colorScheme.error),
+                      Icon(Icons.delete,
+                          size: 18, color: theme.colorScheme.error),
                       const SizedBox(width: 8),
                       Text(
                         l10n.common_delete,
@@ -448,8 +450,8 @@ class ProjectListSection extends ConsumerWidget {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(l10n.projects_failed_to_delete(
-              result.errorOrNull?.message ?? '')),
+          content: Text(l10n
+              .projects_failed_to_delete(result.errorOrNull?.message ?? '')),
           backgroundColor: Colors.red,
         ),
       );

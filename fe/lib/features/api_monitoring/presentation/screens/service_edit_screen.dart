@@ -34,6 +34,7 @@ class _ServiceEditScreenState extends ConsumerState<ServiceEditScreen> {
   int _checkIntervalSeconds = 60;
   int _failureThreshold = 3;
 
+  bool _isActive = true;
   bool _isLoading = false;
   bool _isInitialized = false;
   String? _errorMessage;
@@ -55,6 +56,7 @@ class _ServiceEditScreenState extends ConsumerState<ServiceEditScreen> {
     _timeoutSeconds = service.timeoutSeconds;
     _checkIntervalSeconds = service.checkIntervalSeconds;
     _failureThreshold = service.failureThreshold;
+    _isActive = service.isActive;
     _isInitialized = true;
   }
 
@@ -76,6 +78,7 @@ class _ServiceEditScreenState extends ConsumerState<ServiceEditScreen> {
       timeoutSeconds: _timeoutSeconds,
       checkIntervalSeconds: _checkIntervalSeconds,
       failureThreshold: _failureThreshold,
+      isActive: _isActive,
     );
 
     final serviceId = int.parse(widget.serviceId);
@@ -165,7 +168,17 @@ class _ServiceEditScreenState extends ConsumerState<ServiceEditScreen> {
                     maxLines: 2,
                     enabled: !_isLoading,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
+                  SwitchListTile(
+                    value: _isActive,
+                    onChanged: _isLoading
+                        ? null
+                        : (val) => setState(() => _isActive = val),
+                    title: const Text('Monitoring'),
+                    secondary: const Icon(Icons.monitor_heart_outlined),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  const SizedBox(height: 8),
                   TextFormField(
                     controller: _endpointController,
                     decoration: InputDecoration(

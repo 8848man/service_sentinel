@@ -112,6 +112,19 @@ API monitoring platform. Users register services (API endpoints). The system per
 9. **Guest project plan**: projects owned by `guest_key` have no subscription — always apply free plan limits.
 10. **Inactivity suspension (free plan only)**: if a free plan user has not logged in for `INACTIVITY_SUSPENSION_DAYS` consecutive days (based on `User.last_login_at`), all their services' monitoring is suspended (`service_state` → inactive) and `Subscription.monitoring_suspended_at` is set. Health checks are not performed during suspension. Warning notifications are sent at 7 days, 3 days, and 0 days before suspension. pro / max plans are unaffected.
 11. **Manual reactivation**: a suspended free plan user must explicitly reactivate monitoring via the plan section in settings. The reactivate button is visible only when `Subscription.plan = free` AND `monitoring_suspended_at` is not null. On reactivation, `monitoring_suspended_at` is reset to null and all previously active services resume monitoring.
+12. **Project monitoring toggle**: Project.is_active can be toggled
+    by the owner at any time, on all plans. When deactivated, all
+    child services are treated as inactive — health checks are
+    skipped. When reactivated, all child services resume monitoring.
+    Changes take effect from the next check cycle, not immediately.
+    Individual service states are preserved; the project toggle acts
+    as an override layer.
+
+13. **Service monitoring toggle**: Service.is_active can be toggled
+    independently by the owner at any time, on all plans. A service
+    is only checked when both its own is_active = true AND its parent
+    Project.is_active = true. Changes take effect from the next
+    check cycle.
 
 ## Future Considerations
 
