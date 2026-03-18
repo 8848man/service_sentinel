@@ -92,8 +92,35 @@ async def create_project(
     v3 REQUIRES Firebase authentication.
     The project will be owned by the authenticated user.
     """
-    # Create project with user ownership
+    from app.repositories.subscription_repository import SubscriptionRepository
+    from app.core.plan_limits import get_limits, FALLBACK_PLAN
+    from app.models.subscription import SubscriptionStatus
+
+    # Determine effective plan
+    sub_repo = SubscriptionRepository(db)
+    sub = sub_repo.get_by_user_id(user.id)
+    if sub and sub.status == SubscriptionStatus.ACTIVE:
+        plan = sub.plan.value
+    else:
+        plan = FALLBACK_PLAN
+
+    limits = get_limits(plan)
+
+    # Check project count
     repo = ProjectRepository(db)
+    current_count = len(repo.find_by_user_id(user_id=user.id, limit=1000))
+    if current_count >= limits["max_projects"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "plan_limit_reached",
+                "resource": "project",
+                "current_plan": plan,
+                "limit": limits["max_projects"],
+                "upgrade_required": True,
+            }
+        )
+
     project = repo.create(
         name=request.name,
         description=request.description,

@@ -37,10 +37,43 @@ async def create_service(
     Create a new service to monitor within the project.
     Requires project ownership.
     """
+    from app.repositories.subscription_repository import SubscriptionRepository
+    from app.core.plan_limits import get_limits, FALLBACK_PLAN
+    from app.models.subscription import SubscriptionStatus
+    from app.repositories.project_repository import ProjectRepository
+
     # Verify project ownership
     await verify_project_ownership(auth_context, db)
 
+    # Determine effective plan (Firebase users only; guests always use free limits)
+    if auth_context.auth_type == "firebase" and auth_context.user_id:
+        sub_repo = SubscriptionRepository(db)
+        sub = sub_repo.get_by_user_id(auth_context.user_id)
+        if sub and sub.status == SubscriptionStatus.ACTIVE:
+            plan = sub.plan.value
+        else:
+            plan = FALLBACK_PLAN
+    else:
+        # Guest projects always apply free limits
+        plan = FALLBACK_PLAN
+
+    limits = get_limits(plan)
+
+    # Check service count per project
     repo = ServiceRepository(db)
+    current_count = len(repo.find_all(project_id=project_id, limit=10000))
+    if current_count >= limits["max_services"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "plan_limit_reached",
+                "resource": "service",
+                "current_plan": plan,
+                "limit": limits["max_services"],
+                "upgrade_required": True,
+            }
+        )
+
     return repo.create(project_id=project_id, data=request.model_dump(exclude_unset=True, mode='json'))
 
 
