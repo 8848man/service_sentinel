@@ -67,8 +67,8 @@ class SubscriptionSettingsSection extends ConsumerWidget {
               onTap: () => context.push(AppRoutes.upgrade),
             ),
 
-            // Suspension warning banner (free plan + suspended)
-            if (subState.isSuspended) ...[
+            // Suspension warning banner (free plan + suspended only)
+            if (subState.isSuspended && subState.currentPlan == 'free') ...[
               const Divider(),
               Container(
                 padding: const EdgeInsets.all(12),
