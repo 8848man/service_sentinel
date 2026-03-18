@@ -83,11 +83,19 @@ async def get_auth_context(
 
         # Find or create user
         user_repo = UserRepository(db)
+        is_new_user = user_repo.find_by_firebase_uid(firebase_uid) is None
         user = user_repo.find_or_create_by_firebase_uid(
             firebase_uid=firebase_uid,
             email=email,
             name=name
         )
+
+        # Auto-create subscription for new users
+        if is_new_user:
+            from app.repositories.subscription_repository import SubscriptionRepository
+            sub_repo = SubscriptionRepository(db)
+            if not sub_repo.get_by_user_id(user.id):
+                sub_repo.create(user_id=user.id, plan="pro", status="active")
 
         if not user.is_active:
             raise HTTPException(
@@ -247,11 +255,19 @@ async def get_firebase_user(
 
     # Find or create user
     user_repo = UserRepository(db)
+    is_new_user = user_repo.find_by_firebase_uid(firebase_uid) is None
     user = user_repo.find_or_create_by_firebase_uid(
         firebase_uid=firebase_uid,
         email=email,
         name=name
     )
+
+    # Auto-create subscription for new users
+    if is_new_user:
+        from app.repositories.subscription_repository import SubscriptionRepository
+        sub_repo = SubscriptionRepository(db)
+        if not sub_repo.get_by_user_id(user.id):
+            sub_repo.create(user_id=user.id, plan="pro", status="active")
 
     if not user.is_active:
         raise HTTPException(
