@@ -43,7 +43,7 @@ class SubscriptionRepositoryImpl implements SubscriptionRepository {
     final message = e.response?.data?['detail']?.toString() ?? e.message ?? 'Unknown error';
 
     if (statusCode == 401 || statusCode == 403) {
-      return AuthError(message: message, statusCode: statusCode);
+      return AuthError(message: message);
     } else if (statusCode == 404) {
       return NotFoundError(message: message);
     } else if (statusCode != null) {
