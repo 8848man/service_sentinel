@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:service_sentinel_fe_v2/features/api_monitoring/presentation/widgets/create_service_set_dialog.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/di/repository_providers.dart';
+import 'package:service_sentinel_fe_v2/features/subscription/presentation/widgets/plan_limit_dialog.dart';
 import '../../../../core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../providers/service_provider.dart';
@@ -553,6 +555,22 @@ class ServicesListSection extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) async {
+    // Check plan limit before opening the dialog
+    final subState = ref.read(subscriptionViewModelProvider);
+    final servicesAsync = ref.read(servicesProvider);
+    final currentCount = servicesAsync.valueOrNull?.length ?? 0;
+    if (currentCount >= subState.maxServices) {
+      if (context.mounted) {
+        await PlanLimitDialog.show(
+          context,
+          plan: subState.currentPlan,
+          limit: subState.maxServices,
+          resource: 'services',
+        );
+      }
+      return;
+    }
+
     final result = await showDialog<Service>(
       context: context,
       builder: (context) => const CreateServiceDialog(),

@@ -38,6 +38,7 @@ class AppRoutes {
   // static const String aiAnalysis = '/incident/:id/analysis';
   static const String analysis = '/main/analysis';
   static const String settings = '/main/settings';
+  static const String upgrade = '/upgrade';
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
