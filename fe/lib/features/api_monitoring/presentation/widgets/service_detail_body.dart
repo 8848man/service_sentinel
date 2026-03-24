@@ -4,6 +4,7 @@ import 'package:service_sentinel_fe_v2/core/constants/enums.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../domain/entities/service.dart';
 import '../providers/service_provider.dart';
+import 'latency_chart.dart';
 
 /// Service Detail Body Widget
 ///
@@ -26,6 +27,8 @@ class ServiceDetailBody extends ConsumerWidget {
     final serviceAsync = ref.watch(serviceByIdProvider(int.parse(serviceId)));
     final statsAsync =
         ref.watch(serviceStatsProvider(int.parse(serviceId), '7d'));
+    final latencyAsync =
+        ref.watch(latencySeriesProvider(int.parse(serviceId), '24h'));
 
     return serviceAsync.when(
       loading: () => const Center(
@@ -234,6 +237,35 @@ class ServiceDetailBody extends ConsumerWidget {
                     Colors.orange,
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Latency Chart
+            Text(
+              'Latency (last 24 h)',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 12),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: latencyAsync.when(
+                  loading: () => const SizedBox(
+                    height: 160,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (_, __) => const SizedBox(
+                    height: 160,
+                    child: Center(
+                      child: Text(
+                        'Latency data unavailable.',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                  data: (series) => LatencyChart(series: series),
+                ),
               ),
             ),
             const SizedBox(height: 24),

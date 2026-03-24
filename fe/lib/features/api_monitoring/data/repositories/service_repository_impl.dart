@@ -5,6 +5,7 @@ import '../../../../core/error/result.dart';
 import '../../../../core/error/app_error.dart';
 import '../../domain/entities/service.dart';
 import '../../domain/entities/health_check.dart';
+import '../../domain/entities/latency_series.dart';
 import '../../domain/repositories/service_repository.dart';
 import '../data_sources/service_data_source.dart';
 
@@ -214,6 +215,21 @@ class ServiceRepositoryImpl implements ServiceRepository {
         period: period,
       );
       return Result.success(stats);
+    } catch (e) {
+      return Result.failure(_handleError(e));
+    }
+  }
+
+  @override
+  Future<Result<LatencySeries>> getLatencySeries(
+      int id, String period) async {
+    try {
+      final series = await _remoteDataSource.getLatencySeries(
+        projectId: projectId,
+        serviceId: id,
+        period: period,
+      );
+      return Result.success(series);
     } catch (e) {
       return Result.failure(_handleError(e));
     }

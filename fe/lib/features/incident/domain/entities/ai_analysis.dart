@@ -7,17 +7,17 @@ part 'ai_analysis.freezed.dart';
 @freezed
 class AiAnalysis with _$AiAnalysis {
   const factory AiAnalysis({
-    required String id,
-    required String incidentId,
+    required int id,
+    required int incidentId,
     required String modelUsed,
-    required int promptTokens,
-    required int completionTokens,
-    required double totalCostUsd,
+    int? promptTokens,
+    int? completionTokens,
+    double? totalCostUsd,
     required String rootCauseHypothesis,
-    required double confidenceScore,
+    double? confidenceScore,
     required List<String> debugChecklist,
-    required List<String> suggestedActions,
-    required List<String> relatedErrorPatterns,
+    required List<Map<String, dynamic>> suggestedActions,
+    List<String>? relatedErrorPatterns,
     String? rawResponse,
     required DateTime analyzedAt,
     required int analysisDurationMs,
@@ -26,11 +26,11 @@ class AiAnalysis with _$AiAnalysis {
   const AiAnalysis._();
 
   /// Total tokens used
-  int get totalTokens => promptTokens + completionTokens;
+  int get totalTokens => (promptTokens ?? 0) + (completionTokens ?? 0);
 
   /// Formatted cost
-  String get formattedCost => '\$${totalCostUsd.toStringAsFixed(4)}';
+  String get formattedCost => totalCostUsd != null ? '\$${totalCostUsd!.toStringAsFixed(4)}' : 'N/A';
 
   /// Formatted confidence
-  String get formattedConfidence => '${(confidenceScore * 100).toStringAsFixed(1)}%';
+  String get formattedConfidence => confidenceScore != null ? '${(confidenceScore! * 100).toStringAsFixed(1)}%' : 'N/A';
 }

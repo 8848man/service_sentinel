@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, and_, func
+from sqlalchemy import desc, and_, func, text
 
 from app.models.health_check import HealthCheck
 
@@ -108,3 +108,56 @@ class HealthCheckRepository:
 
     def count_for_service(self, service_id: int) -> int:
         return self.db.query(HealthCheck).filter(HealthCheck.service_id == service_id).count()
+
+    def get_latency_series(
+        self,
+        service_id: int,
+        since: datetime,
+        bucket_minutes: int,
+    ) -> list[dict]:
+        """
+        Return time-bucketed latency aggregates for a service.
+
+        Each dict in the returned list contains:
+            bucket_start  – start of the time bucket (datetime)
+            avg_ms        – average latency for the bucket (float)
+            p95_ms        – 95th-percentile latency (float, PostgreSQL only)
+            sample_count  – number of health checks in the bucket (int)
+
+        Note: percentile_cont is PostgreSQL-specific. Running against SQLite
+        will raise an OperationalError.
+        """
+        sql = text(
+            """
+            SELECT
+                date_trunc('minute', checked_at)
+                    - (EXTRACT(MINUTE FROM checked_at)::int % :bucket_minutes)
+                      * INTERVAL '1 minute'                          AS bucket_start,
+                AVG(latency_ms)                                      AS avg_ms,
+                percentile_cont(0.95) WITHIN GROUP (ORDER BY latency_ms) AS p95_ms,
+                COUNT(*)                                             AS sample_count
+            FROM health_checks
+            WHERE service_id = :service_id
+              AND checked_at  >= :since
+            GROUP BY bucket_start
+            ORDER BY bucket_start
+            """
+        )
+        rows = self.db.execute(
+            sql,
+            {
+                "service_id": service_id,
+                "since": since,
+                "bucket_minutes": bucket_minutes,
+            },
+        ).fetchall()
+
+        return [
+            {
+                "bucket_start": row.bucket_start,
+                "avg_ms": float(row.avg_ms) if row.avg_ms is not None else 0.0,
+                "p95_ms": float(row.p95_ms) if row.p95_ms is not None else 0.0,
+                "sample_count": row.sample_count,
+            }
+            for row in rows
+        ]

@@ -1,5 +1,6 @@
 import '../../domain/entities/service.dart';
 import '../../domain/entities/health_check.dart';
+import '../../domain/entities/latency_series.dart';
 import '../../domain/repositories/service_repository.dart';
 
 /// Abstract interface for service data sources
@@ -86,5 +87,13 @@ abstract class RemoteServiceDataSource extends ServiceDataSource {
     required int projectId,
     required int serviceId,
     String period = '24h',
+  });
+
+  /// Get latency time-series for a service
+  Future<LatencySeries> getLatencySeries({
+    required int projectId,
+    required int serviceId,
+    String period = '24h',
+    String bucket = '5m',
   });
 }

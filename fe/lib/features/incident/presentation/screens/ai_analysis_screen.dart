@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../di/repository_providers.dart';
+import '../../domain/entities/ai_analysis.dart';
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/error/app_error.dart';
 import '../widgets/ai_analysis_view.dart';
+import '../widgets/resolution_checklist.dart';
 
 part 'ai_analysis_screen.g.dart';
 
@@ -44,7 +47,64 @@ class AiAnalysisScreen extends ConsumerWidget {
           final analysisAsync = ref.watch(aiAnalysisProvider(incidentId));
 
           return analysisAsync.when(
-            data: (analysis) => AiAnalysisView(analysis: analysis),
+            data: (analysis) {
+              final typedAnalysis =
+                  analysis is AiAnalysis ? analysis : null;
+
+              // No analysis yet — show empty state with a working request button.
+              if (typedAnalysis == null) {
+                return AiAnalysisView(
+                  analysis: null,
+                  onRequestAnalysis: () async {
+                    final repo = ref.read(incidentRepositoryProvider);
+                    final result = await repo.requestAnalysis(
+                        int.parse(incidentId));
+                    if (result.isSuccess) {
+                      ref.invalidate(aiAnalysisProvider(incidentId));
+                    } else {
+                      final err = result.errorOrNull;
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(err is AppError
+                                ? err.message
+                                : l10n.incidents_failed_to_load_analysis),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                );
+              }
+
+              final steps = typedAnalysis.debugChecklist ?? <String>[];
+              // AiAnalysisView already contains a SingleChildScrollView.
+              // When a checklist is present we need both to scroll together.
+              // Achieve this by making AiAnalysisView non-scrollable via
+              // an outer ScrollView; we pass NeverScrollableScrollPhysics
+              // indirectly by using a CustomScrollView with slivers.
+              if (steps.isEmpty) {
+                return AiAnalysisView(analysis: typedAnalysis);
+              }
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: AiAnalysisView(
+                      analysis: typedAnalysis,
+                      scrollPhysics:
+                          const NeverScrollableScrollPhysics(),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                      child: ResolutionChecklist(steps: steps),
+                    ),
+                  ),
+                ],
+              );
+            },
             loading: () => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

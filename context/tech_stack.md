@@ -35,4 +35,4 @@ See `pubspec.yaml` for full dependency list.
 - **Auth**: Firebase Auth + Google Sign-In
 - **Push notifications**: FCM (firebase_messaging / firebase-admin)
 - **Notification channels**: FCM (push), Email, Slack, Webhook — all implemented under `services/notification/channels/`
-- **AI**: Google Gemini (google-generativeai 0.3.2). `AIAnalysisService` uses the Gemini SDK. `config.py` defaults `AI_MODEL` to `"gemini-pro"`; override via environment variable for a different model.
+- **AI**: Google Gemini (google-generativeai 0.3.2). `AIAnalysisService` uses the Gemini SDK. `config.py` defaults `AI_MODEL` to `"gemini-pro"`; override via environment variable for a different model. Required env vars to activate: `AI_ENABLED=True`, `AI_API_KEY=<key>`. The service is **disabled by default** (`AI_ENABLED=False`); all analysis endpoints return early when disabled.

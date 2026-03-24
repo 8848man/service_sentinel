@@ -3,9 +3,11 @@ import 'package:dio/dio.dart';
 import '../../../../core/config/app_config.dart';
 import '../../../../core/error/app_error.dart';
 import '../../domain/entities/health_check.dart';
+import '../../domain/entities/latency_series.dart';
 import '../../domain/entities/service.dart';
 import '../../domain/repositories/service_repository.dart';
 import '../models/health_check_dto.dart';
+import '../models/latency_series_dto.dart';
 import '../models/service_dto.dart';
 import '../models/service_stats_dto.dart';
 import 'service_data_source.dart';
@@ -245,6 +247,26 @@ class RemoteServiceDataSourceImpl implements RemoteServiceDataSource {
       );
       final dto =
           ServiceStatsDto.fromJson(response.data as Map<String, dynamic>);
+      return dto.toDomain();
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  @override
+  Future<LatencySeries> getLatencySeries({
+    required int projectId,
+    required int serviceId,
+    String period = '24h',
+    String bucket = '5m',
+  }) async {
+    try {
+      final response = await _dio.get(
+        '${_baseUrl(projectId.toString())}/$serviceId/latency',
+        queryParameters: {'period': period, 'bucket': bucket},
+      );
+      final dto =
+          LatencySeriesDto.fromJson(response.data as Map<String, dynamic>);
       return dto.toDomain();
     } on DioException catch (e) {
       throw _handleError(e);

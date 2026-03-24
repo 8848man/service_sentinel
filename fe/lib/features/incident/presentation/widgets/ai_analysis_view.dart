@@ -19,9 +19,20 @@ import '../../../../core/extensions/context_extensions.dart';
 class AiAnalysisView extends StatelessWidget {
   final AiAnalysis? analysis;
 
+  /// Override scroll physics for the internal [SingleChildScrollView].
+  /// Pass [NeverScrollableScrollPhysics] when embedding inside a parent
+  /// scrollable (e.g. [CustomScrollView]).
+  final ScrollPhysics? scrollPhysics;
+
+  /// Called when the user taps "Request Analysis" in the empty state.
+  /// If null, the button is rendered disabled.
+  final VoidCallback? onRequestAnalysis;
+
   const AiAnalysisView({
     super.key,
     this.analysis,
+    this.scrollPhysics,
+    this.onRequestAnalysis,
   });
 
   @override
@@ -30,10 +41,11 @@ class AiAnalysisView extends StatelessWidget {
     final l10n = context.l10n;
 
     if (analysis == null) {
-      return _buildNotAvailableState(context, theme);
+      return _buildNotAvailableState(context, theme, l10n);
     }
 
     return SingleChildScrollView(
+      physics: scrollPhysics,
       padding: const EdgeInsets.all(24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,24 +109,23 @@ class AiAnalysisView extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Suggested actions
-          _buildListSection(
+          _buildSuggestedActionsSection(
             context,
             theme,
             l10n.incidents_suggested_actions,
-            Icons.task_alt,
             analysis!.suggestedActions,
           ),
 
           const SizedBox(height: 24),
 
           // Related error patterns
-          if (analysis!.relatedErrorPatterns.isNotEmpty) ...[
+          if ((analysis!.relatedErrorPatterns ?? []).isNotEmpty) ...[
             _buildListSection(
               context,
               theme,
               l10n.incidents_related_error_patterns,
               Icons.pattern,
-              analysis!.relatedErrorPatterns,
+              analysis!.relatedErrorPatterns ?? [],
             ),
             const SizedBox(height: 24),
           ],
@@ -126,9 +137,7 @@ class AiAnalysisView extends StatelessWidget {
     );
   }
 
-  Widget _buildNotAvailableState(BuildContext context, ThemeData theme) {
-    final l10n = context.l10n;
-
+  Widget _buildNotAvailableState(BuildContext context, ThemeData theme, dynamic l10n) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(48.0),
@@ -157,10 +166,10 @@ class AiAnalysisView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            OutlinedButton.icon(
-              onPressed: null, // Disabled in this view
+            FilledButton.icon(
+              onPressed: onRequestAnalysis,
               icon: const Icon(Icons.psychology),
-              label: Text(l10n.incidents_analysis_not_available),
+              label: Text(l10n.incidents_request_analysis),
             ),
           ],
         ),
@@ -170,7 +179,8 @@ class AiAnalysisView extends StatelessWidget {
 
   Widget _buildConfidenceScore(BuildContext context, ThemeData theme) {
     final l10n = context.l10n;
-    final confidencePercent = analysis!.confidenceScore * 100;
+    if (analysis!.confidenceScore == null) return const SizedBox.shrink();
+    final confidencePercent = analysis!.confidenceScore! * 100;
     final color = confidencePercent >= 80
         ? Colors.green
         : confidencePercent >= 60
@@ -353,6 +363,114 @@ class AiAnalysisView extends StatelessWidget {
     );
   }
 
+  Widget _buildSuggestedActionsSection(
+    BuildContext context,
+    ThemeData theme,
+    String title,
+    List<Map<String, dynamic>> actions,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceVariant,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.task_alt, color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ...actions.asMap().entries.map((entry) {
+            final index = entry.key;
+            final action = entry.value;
+            final actionText = action['action'] as String? ?? '';
+            final priority = action['priority'] as String?;
+            final priorityColor = priority == 'high'
+                ? Colors.red
+                : priority == 'medium'
+                    ? Colors.orange
+                    : Colors.blue;
+
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: index < actions.length - 1 ? 8 : 0,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${index + 1}',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            actionText,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ),
+                        if (priority != null) ...[
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: priorityColor.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  color: priorityColor.withOpacity(0.5)),
+                            ),
+                            child: Text(
+                              priority.toUpperCase(),
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: priorityColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 9,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ],
+      ),
+    );
+  }
+
   Widget _buildMetadataSection(BuildContext context, ThemeData theme) {
     final l10n = context.l10n;
 
@@ -379,8 +497,8 @@ class AiAnalysisView extends StatelessWidget {
             l10n.incidents_metadata_tokens,
             l10n.incidents_metadata_tokens_detail(
               analysis!.totalTokens,
-              analysis!.promptTokens,
-              analysis!.completionTokens,
+              analysis!.promptTokens ?? 0,
+              analysis!.completionTokens ?? 0,
             ),
           ),
           _buildMetadataItem(

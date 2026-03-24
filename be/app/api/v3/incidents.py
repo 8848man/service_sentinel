@@ -53,6 +53,12 @@ async def get_incidents(
 
     # Get incidents using repository method that filters by service_ids
     incident_repo = IncidentRepository(db)
+    total = incident_repo.count_all_by_service_ids(
+        service_ids=service_ids,
+        status=status_filter,
+        severity=severity,
+        service_id=service_id,
+    )
     incidents = incident_repo.find_all_by_service_ids(
         service_ids=service_ids,
         status=status_filter,
@@ -70,8 +76,6 @@ async def get_incidents(
             service_name=incident.service.name
         )
         items_with_service.append(item)
-
-    total = len(items_with_service)
 
     return IncidentListResponse(total=total, items=items_with_service)
 

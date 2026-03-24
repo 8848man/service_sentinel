@@ -113,6 +113,28 @@ class IncidentRepository:
         self.db.refresh(incident)
         return incident
 
+    def count_all_by_service_ids(
+        self,
+        service_ids: list[int],
+        status: Optional[IncidentStatus] = None,
+        severity: Optional[IncidentSeverity] = None,
+        service_id: Optional[int] = None,
+    ) -> int:
+        """Count incidents for a list of service IDs (for project-scoped queries)"""
+        if not service_ids:
+            return 0
+
+        query = self.db.query(Incident).filter(Incident.service_id.in_(service_ids))
+
+        if status:
+            query = query.filter(Incident.status == status)
+        if severity:
+            query = query.filter(Incident.severity == severity)
+        if service_id:
+            query = query.filter(Incident.service_id == service_id)
+
+        return query.count()
+
     def find_all_by_service_ids(
         self,
         service_ids: list[int],

@@ -1,6 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import model_validator
 from typing import Optional
 import json
+
+_PLACEHOLDER_SECRET_KEY = "change-this-in-production-use-openssl-rand-hex-32"
 
 class Settings(BaseSettings):
     # Application
@@ -29,8 +32,17 @@ class Settings(BaseSettings):
     MONITORING_INTERVAL_SECONDS: int = 30
 
     # Security
-    SECRET_KEY: str = "change-this-in-production-use-openssl-rand-hex-32"
+    SECRET_KEY: Optional[str] = None
     ENCRYPTION_KEY: Optional[str] = None  # For encrypting sensitive headers
+
+    @model_validator(mode='after')
+    def validate_secret_key(self) -> 'Settings':
+        if not self.SECRET_KEY or self.SECRET_KEY == _PLACEHOLDER_SECRET_KEY:
+            raise ValueError(
+                "SECRET_KEY must be set to a secure random value via the SECRET_KEY environment variable. "
+                "Generate one with: openssl rand -hex 32"
+            )
+        return self
 
     # CORS
     CORS_ORIGINS: str = ""

@@ -21,6 +21,7 @@ from app.schemas.health_check_schema import (
     HealthCheckListResponse
 )
 from app.schemas.incident_schema import IncidentWithService
+from app.schemas.latency_schema import LatencyPoint, LatencySeriesResponse
 from app.services.monitoring.monitoring_worker import MonitoringWorker
 
 router = APIRouter(prefix="/projects/{project_id}", tags=["Services (v3)"])
@@ -351,6 +352,78 @@ async def get_service_stats(
         service_id=service_id,
         period=period,
         **stats
+    )
+
+
+@router.get("/services/{service_id}/latency", response_model=LatencySeriesResponse)
+async def get_service_latency(
+    project_id: int,
+    service_id: int,
+    period: str = Query("24h", pattern="^(1h|24h|7d|30d)$"),
+    bucket: str = Query("5m", pattern="^(1m|5m|15m|30m|1h)$"),
+    auth_context: AuthContext = Depends(get_auth_context),
+    db: Session = Depends(get_db),
+):
+    """
+    Get latency time-series for a service.
+
+    Returns avg and p95 latency grouped into time buckets.
+    Requires project ownership.
+
+    Note: uses PostgreSQL-specific percentile_cont – will fail against SQLite.
+    """
+    await verify_project_ownership(auth_context, db)
+
+    service_repo = ServiceRepository(db)
+    service = service_repo.find_by_id(service_id, project_id=project_id)
+    if not service:
+        raise HTTPException(status_code=404, detail="Service not found")
+
+    period_map = {
+        "1h": timedelta(hours=1),
+        "24h": timedelta(hours=24),
+        "7d": timedelta(days=7),
+        "30d": timedelta(days=30),
+    }
+    bucket_map = {
+        "1m": 1,
+        "5m": 5,
+        "15m": 15,
+        "30m": 30,
+        "1h": 60,
+    }
+
+    since = datetime.utcnow() - period_map[period]
+    bucket_minutes = bucket_map[bucket]
+
+    health_repo = HealthCheckRepository(db)
+    rows = health_repo.get_latency_series(service_id, since=since, bucket_minutes=bucket_minutes)
+
+    data_points = [
+        LatencyPoint(
+            bucket_start=row["bucket_start"],
+            avg_ms=row["avg_ms"],
+            p95_ms=row["p95_ms"],
+            sample_count=row["sample_count"],
+        )
+        for row in rows
+    ]
+
+    overall_avg = (
+        sum(dp.avg_ms * dp.sample_count for dp in data_points)
+        / sum(dp.sample_count for dp in data_points)
+        if data_points
+        else 0.0
+    )
+    overall_p95 = max((dp.p95_ms for dp in data_points), default=0.0)
+
+    return LatencySeriesResponse(
+        service_id=service_id,
+        period=period,
+        bucket=bucket,
+        avg_latency_ms=round(overall_avg, 2),
+        p95_latency_ms=round(overall_p95, 2),
+        data_points=data_points,
     )
 
 
