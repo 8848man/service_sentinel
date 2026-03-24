@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../di/repository_providers.dart';
 import '../../../../core/error/result.dart';
 import '../../domain/entities/service.dart';
+import '../../domain/entities/latency_series.dart';
 import '../../domain/repositories/service_repository.dart';
 import '../../domain/usecases/load_services.dart';
 import '../../domain/usecases/create_service.dart';
@@ -67,6 +68,23 @@ Future<ServiceStats> serviceStats(
 ) async {
   final repository = ref.watch(serviceRepositoryProvider);
   final result = await repository.getStats(serviceId, period);
+
+  if (result.isSuccess) {
+    return result.dataOrNull!;
+  } else {
+    throw result.errorOrNull!;
+  }
+}
+
+/// Provider to fetch latency time-series for a service
+@riverpod
+Future<LatencySeries> latencySeries(
+  LatencySeriesRef ref,
+  int serviceId,
+  String period,
+) async {
+  final repository = ref.watch(serviceRepositoryProvider);
+  final result = await repository.getLatencySeries(serviceId, period);
 
   if (result.isSuccess) {
     return result.dataOrNull!;

@@ -95,6 +95,7 @@ Auth column values:
 | GET | `/api/v3/projects/{project_id}/services/{service_id}/health-checks` | Firebase or API key | 200 | Paginated health check history for a service. |
 | GET | `/api/v3/projects/{project_id}/services/{service_id}/health-checks/latest` | Firebase or API key | 200 | Most recent health check result for a service. |
 | GET | `/api/v3/projects/{project_id}/services/{service_id}/stats` | Firebase or API key | 200 | Uptime statistics for a service. Query param: `period` (`1h`, `24h`, `7d`, `30d`; default `24h`). |
+| GET | `/api/v3/projects/{project_id}/services/{service_id}/latency` | Firebase or API key | 200 | Bucketed latency time-series for a service. Returns `LatencySeriesResponse` with `avg_latency_ms`, `p95_latency_ms`, and `data_points`. Query params: `since` (ISO-8601 datetime), `bucket_minutes` (int). Reads from `health_checks` using `HealthCheck.latency_ms` and `HealthCheck.checked_at`. **Note**: `p95_latency_ms` uses `percentile_cont(0.95)` — PostgreSQL only; fails in SQLite dev mode. |
 
 ### Incidents
 

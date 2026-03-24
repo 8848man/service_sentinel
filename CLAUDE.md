@@ -38,6 +38,7 @@ be/
 ├── models/           ← SQLAlchemy ORM models (no schema imports)
 ├── repositories/     ← DB access only; returns ORM instances
 ├── schemas/          ← Pydantic request/response models ({Resource}Create / Update / Response)
+│   └── latency_schema.py  ← LatencyPoint, LatencySeriesResponse (new — latency visualization)
 └── services/
     ├── ai_analysis_service.py   ← AIAnalysisService; uses Gemini SDK (google-generativeai)
     ├── incident_service.py      ← IncidentService; called by monitoring worker
@@ -174,6 +175,14 @@ flutter build ios                                               # iOS
 dart run build_runner build --delete-conflicting-outputs       # regenerate .g.dart / .freezed.dart
 flutter gen-l10n                                                # regenerate l10n
 ```
+
+### Known Bugs / Pre-existing Issues
+
+- **`IncidentStatus.investigating` crash** (`incident_detail_body._getStatusColor`): the switch/case throws `UnimplementedError` for the `investigating` status. Must add a case for `investigating` before shipping incident detail screens.
+- **`AiAnalysisDto.suggestedActions` type mismatch**: currently typed `List<String>` but the BE returns `List<dict>` (`List<Map<String,dynamic>>`). Fix by updating both `AiAnalysisDto` and the `AiAnalysis` domain entity to use `List<Map<String, dynamic>>` (or introduce a `SuggestedAction` value object).
+- **`AnalysisOverviewBody` hardcoded values**: the screen currently shows static `'0'` counts. Wire it to `features/analysis/presentation/providers/analysis_provider.dart` which must be created.
+- **`ai_analysis_service._build_analysis_prompt` null-safety gap**: `trigger_check` is a nullable FK; accessing its fields without a None guard will raise `AttributeError` at runtime when the triggering health check has been deleted.
+- **`percentile_cont` SQLite incompatibility**: the `/latency` endpoint uses `percentile_cont(0.95)` (PostgreSQL-specific). Running the backend against SQLite in dev mode will cause this query to fail.
 
 ### Do NOT
 

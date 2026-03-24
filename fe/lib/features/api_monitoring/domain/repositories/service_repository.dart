@@ -1,6 +1,7 @@
 import '../../../../core/error/result.dart';
 import '../entities/service.dart';
 import '../entities/health_check.dart';
+import '../entities/latency_series.dart';
 
 /// Service repository interface
 /// Abstracts local and remote data sources for API monitoring
@@ -43,6 +44,9 @@ abstract class ServiceRepository {
 
   /// Get service statistics
   Future<Result<ServiceStats>> getStats(int id, String period);
+
+  /// Get latency time-series for a service
+  Future<Result<LatencySeries>> getLatencySeries(int id, String period);
 }
 
 /// Service statistics

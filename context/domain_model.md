@@ -70,6 +70,15 @@ API monitoring platform. Users register services (API endpoints). The system per
 - `needs_analysis`: flag to trigger AI analysis
 - Belongs to `Service`; may trigger at most one `Incident`
 
+**LatencyPoint** — Single bucket in a latency time-series. Response projection only; not persisted.
+- `bucket_start` (datetime), `avg_latency_ms` (float), `p95_latency_ms` (float, PostgreSQL only), `sample_count` (int)
+- Sourced from `HealthCheck.latency_ms` grouped by `HealthCheck.checked_at` into fixed-duration buckets
+
+**LatencySeriesResponse** — Top-level latency query response. Response projection only; not persisted.
+- `service_id`, `avg_latency_ms` (float — series-wide average), `p95_latency_ms` (float — series-wide 95th percentile)
+- `data_points`: list of `LatencyPoint`
+- Defined in `be/app/schemas/latency_schema.py`
+
 **HealthCheckResult** — Lightweight projection of check results for aggregation/dashboards only.
 - `is_alive`, `status_code`, `latency_ms`, `error_message`, `checked_at`
 - Belongs to `Service`
@@ -89,7 +98,8 @@ API monitoring platform. Users register services (API endpoints). The system per
 - `incident_id`: unique — one analysis per incident
 - `model_used`, `prompt_tokens`, `completion_tokens`, `total_cost_usd`
 - `root_cause_hypothesis`, `confidence_score` (0.0–1.0)
-- `debug_checklist` (JSON array of steps), `suggested_actions` (JSON array of {action, priority})
+- `debug_checklist` (JSON array of strings — each entry is one resolution step; drives the FE `ResolutionChecklist` widget with per-item checkbox state and a `LinearProgressIndicator`)
+- `suggested_actions` (JSON array of `{action, priority}` objects — typed `List<Map<String,dynamic>>` in the FE `AiAnalysis` entity and `AiAnalysisDto`; **do not type as `List<String>`**)
 - `related_error_patterns` (JSON), `raw_response`, `analysis_duration_ms`
 - Belongs to `Incident`
 
@@ -125,6 +135,9 @@ API monitoring platform. Users register services (API endpoints). The system per
     is only checked when both its own is_active = true AND its parent
     Project.is_active = true. Changes take effect from the next
     check cycle.
+
+14. **Resolution checklist state is local only**: `AIAnalysis.debug_checklist` stores the step strings. Checkbox completion state (checked/unchecked per step) is maintained in FE widget-local state (`List<bool>`) and is never persisted to the backend.
+15. **Latency series uses PostgreSQL aggregates**: the `/latency` endpoint computes `p95_latency_ms` with `percentile_cont(0.95)` — a PostgreSQL-specific function. This query will fail if the backend is pointed at an SQLite database.
 
 ## Future Considerations
 

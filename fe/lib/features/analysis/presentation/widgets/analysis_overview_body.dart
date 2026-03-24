@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/extensions/context_extensions.dart';
+import '../providers/analysis_provider.dart';
 
 /// Analysis Overview Body Widget
 ///
@@ -12,6 +13,7 @@ class AnalysisOverviewBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
+    final summaryAsync = ref.watch(analysisSummaryProvider);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -24,43 +26,68 @@ class AnalysisOverviewBody extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.5,
-            children: [
-              _buildSummaryCard(
-                context,
-                l10n.analysis_total_analyses,
-                '0',
-                Icons.analytics,
-                Colors.blue,
-              ),
-              _buildSummaryCard(
-                context,
-                l10n.analysis_pending,
-                '0',
-                Icons.pending,
-                Colors.orange,
-              ),
-              _buildSummaryCard(
-                context,
-                l10n.analysis_completed,
-                '0',
-                Icons.check_circle,
-                Colors.green,
-              ),
-              _buildSummaryCard(
-                context,
-                l10n.analysis_failed,
-                '0',
-                Icons.error,
-                Colors.red,
-              ),
-            ],
+          summaryAsync.when(
+            loading: () => const SizedBox(
+              height: 160,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            error: (_, __) => GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 1.5,
+              children: [
+                _buildSummaryCard(
+                    context, l10n.analysis_total_analyses, '0',
+                    Icons.analytics, Colors.blue),
+                _buildSummaryCard(context, l10n.analysis_pending, '0',
+                    Icons.pending, Colors.orange),
+                _buildSummaryCard(context, l10n.analysis_completed, '0',
+                    Icons.check_circle, Colors.green),
+                _buildSummaryCard(context, l10n.analysis_failed, '0',
+                    Icons.error, Colors.red),
+              ],
+            ),
+            data: (summary) => GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 1.5,
+              children: [
+                _buildSummaryCard(
+                  context,
+                  l10n.analysis_total_analyses,
+                  '${summary.total}',
+                  Icons.analytics,
+                  Colors.blue,
+                ),
+                _buildSummaryCard(
+                  context,
+                  l10n.analysis_pending,
+                  '${summary.pending}',
+                  Icons.pending,
+                  Colors.orange,
+                ),
+                _buildSummaryCard(
+                  context,
+                  l10n.analysis_completed,
+                  '${summary.completed}',
+                  Icons.check_circle,
+                  Colors.green,
+                ),
+                _buildSummaryCard(
+                  context,
+                  l10n.analysis_failed,
+                  '${summary.failed}',
+                  Icons.error,
+                  Colors.red,
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 24),
 

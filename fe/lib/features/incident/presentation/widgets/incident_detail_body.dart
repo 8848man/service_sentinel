@@ -394,8 +394,7 @@ class IncidentDetailBody extends ConsumerWidget {
       case IncidentStatus.resolved:
         return Colors.green;
       case IncidentStatus.investigating:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return Colors.purple;
     }
   }
 

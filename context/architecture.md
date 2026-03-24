@@ -72,6 +72,12 @@ Responsibilities:
 
 AI analysis is triggered **on-demand by users** rather than automatically during monitoring execution.
 
+**Activation**: the service is disabled by default (`AI_ENABLED=False` in `config.py`). Set `AI_ENABLED=True` and `AI_API_KEY=<gemini_key>` in `.env` to enable. The model is configurable via `AI_MODEL` (default `"gemini-pro"`).
+
+**Known gaps**:
+- `_build_analysis_prompt` does not null-guard `trigger_check` (nullable FK) — add a None check before accessing its fields.
+- `AnalysisOverviewBody` on the FE currently displays hardcoded `'0'` values; it must be wired to the real data through `analysis_provider.dart` (`features/analysis/presentation/providers/`).
+
 
 ## Database
 

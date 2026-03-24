@@ -306,11 +306,11 @@ class AIAnalysisService:
     - Timeout: {service.timeout_seconds}s
     
     Failure:
-    - Status code: {trigger.status_code}
-    - Error type: {trigger.error_type}
-    - Error message: {trigger.error_message}
-    - Latency: {trigger.latency_ms}ms
-    - Response body: {trigger.response_body[:500] if trigger.response_body else "N/A"}
+    - Status code: {trigger.status_code if trigger is not None else "No triggering health check available"}
+    - Error type: {trigger.error_type if trigger is not None else "N/A"}
+    - Error message: {trigger.error_message if trigger is not None else "N/A"}
+    - Latency: {str(trigger.latency_ms) + "ms" if trigger is not None else "N/A"}
+    - Response body: {trigger.response_body[:500] if trigger is not None and trigger.response_body else "N/A"}
     
     Context:
     - Severity: {incident.severity.value}
@@ -319,7 +319,7 @@ class AIAnalysisService:
 
     async def _call_gemini(self, prompt: str):
         import asyncio
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
 
         return await loop.run_in_executor(
             None,
@@ -342,7 +342,6 @@ class AIAnalysisService:
     #         raise
 
     def _parse_gemini_response(self, response) -> dict:
-        print('resp parse')
         """
         Gemini SDK response 객체를 받아
         마크다운 / 설명 문구를 제거하고 JSON만 안전하게 파싱한다.
@@ -353,15 +352,14 @@ class AIAnalysisService:
 
         raw_text = response.text.strip()
 
-        logger.error("RAW GEMINI RESPONSE:\n%s", raw_text)
+        logger.debug("RAW GEMINI RESPONSE:\n%s", raw_text)
 
         try:
-            print('raw text is $raw_text', raw_text)
             # 1. 코드블록 제거 (```json, ```)
             cleaned = raw_text
             cleaned = cleaned.replace("```json", "")
             cleaned = cleaned.replace("```", "")
-            logger.error("RAW GEMINI RESPONSE:\n%s", cleaned)
+            logger.debug("RAW GEMINI RESPONSE:\n%s", cleaned)
 
             # 2. JSON 시작/끝 탐색 (object 기준)
             start = cleaned.find("{")
