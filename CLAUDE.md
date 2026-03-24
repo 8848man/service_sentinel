@@ -84,6 +84,9 @@ alembic revision --autogenerate -m ""  # generate migration
 - Add models to `models/` that import from `schemas/`.
 - Hardcode `AI_API_KEY` or any secret in source files.
 - Call the notification system directly from `monitoring_worker.py`.
+- Modify or delete existing ORM model fields — additive changes only (new nullable columns via Alembic migration).
+- Edit existing Alembic migration files — create new ones only.
+- Change existing API response field names or remove fields — only add new optional fields.
 
 ---
 
@@ -191,3 +194,5 @@ flutter gen-l10n                                                # regenerate l10
 - Import between features directly — go through `core/` or `di/` bindings.
 - Mutate state inside `presentation/providers/` — that belongs in `view_models/`.
 - Skip regenerating `.g.dart` files after modifying `@riverpod` annotated classes or `freezed` models.
+- Remove or rename existing DTO fields — only add new nullable fields.
+- Change existing route paths defined in AppRoutes.
